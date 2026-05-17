@@ -700,7 +700,7 @@ function renderProducts(list, containerId) {
           <span class="sale-price">₹${p.salePrice}</span>
           <span class="reg-price">₹${p.price}</span>
         </div>
-        <button class="add-cart-btn" data-pid="${p.id}" onclick="addToCart(${p.id})">Add to Bag 🛍️</button>
+        <button class="add-cart-btn" data-pid="${p.id}">Add to Bag 🛍️</button>
       </div>
     </div>
   `).join('');
@@ -742,12 +742,12 @@ function renderBoxPicker() {
         </div>
         <div style="display:flex;align-items:center;gap:0.25rem;justify-content:flex-end;">
           ${qty > 0
-            ? `<button class="${qty===1 ? 'add-cart-btn' : 'add-cart-btn'}" onclick="changeBoxQty(event,${p.id},-1)" title="Remove">✕</button>
+            ? `<button class="add-cart-btn box-rel-btn" data-pid="${p.id}" data-delta="-1" title="Remove one">✕</button>
                <span style="font-size:0.85rem;font-weight:600;color:var(--pink-dark);min-width:1.4em;text-align:center;">${qty}</span>`
             : ''
           }
-          <button class="${qty > 0 ? 'add-cart-btn' : 'add-cart-btn'}"
-            onclick="changeBoxQty(event,${p.id},1)"
+          <button class="add-cart-btn box-rel-btn"
+            data-pid="${p.id}" data-delta="1"
             style="${!qty && 'opacity:0.75;'}"
             title="Add to box">
             ${qty > 0 ? '＋ Add more' : '＋ Add'}
@@ -818,10 +818,10 @@ function renderBoxSummary() {
         <strong>${p.emoji} ${p.name}</strong>
         <span style="font-size:0.78rem;color:var(--text-m);flex:1;text-align:center;">${qty} × ₹${p.salePrice} = ₹${line}</span>
         <div style="display:flex;align-items:center;gap:0.35rem;">
-          <button onclick="changeBoxQty(null,${p.id},-1)" style="background:var(--cream);border:1px solid var(--border);border-radius:4px;width:22px;height:22px;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-m);">−</button>
+          <button data-pid="${p.id}" data-delta="-1" class="box-qty-btn" title="Remove one">−</button>
           <span style="font-size:0.8rem;min-width:1.2em;text-align:center;font-weight:500;">${qty}</span>
-          <button onclick="changeBoxQty(null,${p.id},1)"  style="background:var(--cream);border:1px solid var(--border);border-radius:4px;width:22px;height:22px;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--pink-dark);">＋</button>
-          <button onclick="changeBoxQty(null,${p.id},-${qty})" title="Remove" style="background:none;border:none;color:var(--text-m);font-size:0.82rem;cursor:pointer;margin-left:0.15rem;">✕</button>
+          <button data-pid="${p.id}" data-delta="1"  class="box-qty-btn" title="Add one">＋</button>
+          <button data-pid="${p.id}" data-delta="-${qty}" class="box-remove-all-btn" title="Remove all">✕</button>
         </div>
       </div>`;}).join('');
   }
@@ -862,8 +862,9 @@ function orderBoxWhatsApp() {
 }
 
 function renderCart() {
-  const totalEl = document.getElementById('cart-total-val');
-  const countEl = document.getElementById('cart-count');
+  const listEl   = document.getElementById('cart-items-list');
+  const totalEl  = document.getElementById('cart-total-val');
+  const countEl  = document.getElementById('cart-count');
   countEl.textContent = cart.length;
   if (!cart.length) {
     listEl.innerHTML = '<div class="cart-empty"><span>🛍️</span><p>Your gift bag is empty.<br>Start adding beautiful hampers!</p></div>';
@@ -877,11 +878,11 @@ function renderCart() {
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-price">₹${item.salePrice}</div>
       </div>
-      <button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button>
+      <button class="cart-item-remove" data-idx="${idx}">✕</button>
     </div>
   `).join('');
   const total = cart.reduce((s, i) => s + i.salePrice, 0);
-  if (totalEl) totalEl.textContent = `₹${total}`;
+  if (totalEl) totalEl.textContent = '₹' + total;
 }
 
 // ─── ACTIONS ───────────────────────────────────────────────
@@ -937,44 +938,82 @@ function showPage(page) {
   if (page === 'shop') renderProducts(products, 'shop-grid');
 }
 
-// ── EVENT DELEGATION (replaces inline onclick — one unhandled error can't crash the page) ──
+// ── EVENT DELEGATION (replaces all inline onclick — one bad handler can't crash the page) ──
 (function wireEvents() {
   document.addEventListener('DOMContentLoaded', function() {
 
-    // ── Relation cards (data-rel → filterByRelation) ──────────────
+    // ── Relation cards → filterByRelation ──────────────────────────
     var grid = document.getElementById('relations-grid');
     if (grid) {
       grid.addEventListener('click', function(e) {
         var card = e.target.closest('.relation-card');
         if (!card) return;
-        var rel = card.getAttribute('data-rel');
-        if (typeof filterByRelation === 'function') filterByRelation(rel);
+        if (typeof filterByRelation === 'function') filterByRelation(card.getAttribute('data-rel'));
       });
     }
 
-    // ── Best-seller / product cards ──────────────────────────────
+    // ── Bestseller product cards → addToCart ───────────────────────
     var bestGrid = document.getElementById('bestsellers-grid');
     if (bestGrid) {
       bestGrid.addEventListener('click', function(e) {
         var btn = e.target.closest('.add-cart-btn');
         if (!btn) return;
-        var id = btn.getAttribute('data-pid');
-        if (id && typeof addToCart === 'function') addToCart(+id);
+        var id = parseInt(btn.getAttribute('data-pid'));
+        if (id && typeof addToCart === 'function') addToCart(id);
       });
     }
 
-    // ── Product grid (shop page) ─────────────────────────────────
+    // ── Shop page product grid → addToCart ─────────────────────────
     function bindShopGrid() {
       var sg = document.getElementById('shop-grid');
       if (!sg) return;
       sg.addEventListener('click', function(e) {
         var btn = e.target.closest('.add-cart-btn');
         if (!btn) return;
-        var id = btn.getAttribute('data-pid');
-        if (id && typeof addToCart === 'function') addToCart(+id);
+        var id = parseInt(btn.getAttribute('data-pid'));
+        if (id && typeof addToCart === 'function') addToCart(id);
       });
     }
     bindShopGrid();
+
+    // ── Cart panel → removeFromCart ────────────────────────────────
+    var cartItemsList = document.getElementById('cart-items-list');
+    if (cartItemsList) {
+      cartItemsList.addEventListener('click', function(e) {
+        var btn = e.target.closest('.cart-item-remove');
+        if (!btn) return;
+        var idx = parseInt(btn.getAttribute('data-idx'));
+        if (!isNaN(idx) && typeof removeFromCart === 'function') removeFromCart(idx);
+      });
+    }
+
+    // ── Box builder card → changeBoxQty ─────────────────────────────
+    var boxGrid = document.getElementById('box-products-grid');
+    if (boxGrid) {
+      boxGrid.addEventListener('click', function(e) {
+        var btn = e.target.closest('[data-delta]');
+        if (!btn) return;
+        var pid       = parseInt(btn.getAttribute('data-pid'));
+        var delta     = parseInt(btn.getAttribute('data-delta'));
+        if (!isNaN(pid) && !isNaN(delta) && typeof changeBoxQty === 'function') {
+          changeBoxQty(null, pid, delta);
+        }
+      });
+    }
+
+    // ── Box summary panel (qty + remove-all) ────────────────────────
+    var boxBoxItems = document.getElementById('box-box-items');
+    if (boxBoxItems) {
+      boxBoxItems.addEventListener('click', function(e) {
+        var btn = e.target.closest('[data-pid]');
+        if (!btn) return;
+        var pid   = parseInt(btn.getAttribute('data-pid'));
+        var delta = parseInt(btn.getAttribute('data-delta')) || 0;
+        if (!isNaN(pid) && typeof changeBoxQty === 'function') {
+          changeBoxQty(null, pid, delta);
+        }
+      });
+    }
 
   });
 })(); // end wireEvents

@@ -1,0 +1,8 @@
+{
+  "admin": {
+    "username": "admin",
+    "passwordHash": "admin123",
+    "name": "Giftrapture Owner",
+    "role": "admin"
+  }
+}

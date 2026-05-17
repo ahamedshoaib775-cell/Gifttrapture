@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giftrapture — Admin Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --pink:#f7c5d0;--pink-deep:#e8879a;--pink-dark:#b85068;
+      --cream:#fdf8f2;--lav:#e8e0f0;--lav-deep:#c9b8e8;
+      --gold:#c9a96e;--gold-lt:#f0e0c0;
+      --text:#3a2a2a;--text-m:#7a6060;--border:rgba(200,160,140,0.22);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body {
+      font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);
+      min-height:100vh;display:flex;align-items:center;justify-content:center;
+      padding:2rem;background-image:
+        radial-gradient(ellipse at 20% 80%, rgba(247,197,208,0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(232,224,240,0.4) 0%, transparent 50%);
+    }
+    h1,h2,h3{font-family:'Playfair Display',serif;}
+    a{text-decoration:none;color:inherit;}
+
+    /* CARD */
+    .login-card {
+      background:var(--white);border:1px solid var(--border);border-radius:20px;
+      padding:2.5rem 2rem;width:min(420px,100%);box-shadow:0 12px 48px rgba(184,80,104,0.08);
+    }
+    .login-logo { text-align:center;margin-bottom:2rem; }
+    .login-logo span { font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--pink-dark);letter-spacing:0.02em; }
+    .login-logo span b { color:var(--gold); }
+    .login-logo p { font-size:0.82rem;color:var(--text-m);margin-top:0.35rem;letter-spacing:0.04em; }
+
+    /* FORM */
+    .form-group { margin-bottom:1.15rem; }
+    .form-group label {
+      display:block;font-size:0.78rem;letter-spacing:0.07em;text-transform:uppercase;
+      color:var(--text-m);margin-bottom:0.4rem;font-weight:500;
+    }
+    .form-input {
+      width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:10px;
+      padding:0.65rem 0.9rem;font-size:0.92rem;font-family:'Jost',sans-serif;color:var(--text);
+      transition:border-color 0.2s,box-shadow 0.2s;
+    }
+    .form-input:focus { outline:none;border-color:var(--pink-deep);box-shadow:0 0 0 3px rgba(232,135,154,0.15); }
+    .form-input::placeholder { color:var(--text-m);opacity:0.55; }
+
+    .form-error { font-size:0.78rem;color:#b8365a;margin-top:0.3rem;min-height:1em;opacity:0;transition:opacity 0.2s; }
+    .form-error.visible { opacity:1; }
+
+    /* PASSWORD TOGGLE */
+    .password-wrap { position:relative; }
+    .password-wrap .form-input { padding-right:2.8rem; }
+    .toggle-pwd {
+      position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);
+      background:none;border:none;cursor:pointer;font-size:0.95rem;color:var(--text-m);
+    }
+
+    /* REMEMBER */
+    .form-row { display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem; }
+    .remember-me { display:flex;align-items:center;gap:0.45rem;font-size:0.82rem;color:var(--text-m);cursor:pointer; }
+    .remember-me input { accent-color:var(--pink-dark);width:15px;height:15px; }
+    .forgot-link { font-size:0.82rem;color:var(--pink-dark);cursor:pointer;transition:color 0.2s; }
+    .forgot-link:hover { color:var(--pink); }
+
+    /* BUTTON */
+    .btn-login {
+      width:100%;background:var(--pink-dark);color:#fff;border:none;border-radius:12px;
+      padding:0.75rem;font-size:0.92rem;font-weight:500;letter-spacing:0.04em;
+      transition:opacity 0.2s,transform 0.15s;position:relative;
+    }
+    .btn-login:hover { opacity:0.9; }
+    .btn-login:active { transform:scale(0.985); }
+    .btn-login:disabled { opacity:0.65;cursor:not-allowed; }
+    .btn-login .spinner {
+      display:none;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;
+      border-radius:50%;width:18px;height:18px;animation:spin 0.6s linear infinite;
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    }
+    .btn-login.loading .spinner { display:block; }
+    .btn-login.loading span { opacity:0; }
+    @keyframes spin { to { transform:translate(-50%,-50%) rotate(360deg); } }
+
+    /* DIVIDER */
+    .divider { display:flex;align-items:center;gap:0.75rem;margin:1.5rem 0; }
+    .divider::before,.divider::after { content:'';flex:1;height:1px;background:var(--border); }
+    .divider span { font-size:0.76rem;color:var(--text-m);white-space:nowrap; }
+
+    /* DEMO BADGE */
+    .demo-badge {
+      text-align:center;background:var(--pink);border-radius:10px;padding:0.75rem 1rem;
+      font-size:0.78rem;color:var(--pink-dark);margin-bottom:1.25rem;
+    }
+    .demo-badge strong { display:block;margin-top:0.25rem;cursor:pointer;letter-spacing:0.05em;user-select:all; }
+
+    /* FOOTER */
+    .login-footer { text-align:center;margin-top:1.5rem;font-size:0.78rem;color:var(--text-m); }
+    .login-footer a { color:var(--pink-dark);cursor:pointer; }
+
+    /* LOCK SCREEN */
+    .locked-overlay {
+      position:fixed;inset:0;background:rgba(253,248,242,0.92);backdrop-filter:blur(6px);
+      display:flex;align-items:center;justify-content:center;z-index:999;
+    }
+    .locked-overlay.hidden { display:none; }
+
+    /* SHIMMER */
+    .shimmer {
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%,100%{opacity:0.55} 50%{opacity:1} }
+
+    @media(max-width:480px){
+      .login-card{padding:2rem 1.5rem;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN / BIOMETRIC LOCK SCREEN -->
+  <div class="locked-overlay" id="lock-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <span>Gift<b>rapture</b></span>
+        <p>Admin Panel is locked</p>
+      </div>
+      <p style="text-align:center;font-size:0.85rem;color:var(--text-m);margin-bottom:1.5rem;">
+        Enter your PIN to unlock the dashboard
+      </p>
+      <div class="form-group">
+        <label>Admin PIN</label>
+        <input type="password" class="form-input" id="pin-input" placeholder="••••" maxlength="8"
+               onkeydown="if(event.key==='Enter') attemptUnlock()" />
+        <div class="form-error" id="pin-error">Incorrect PIN, please try again.</div>
+      </div>
+      <button class="btn-login" onclick="attemptUnlock()" id="pin-btn">
+        <span>Unlock</span><div class="spinner"></div>
+      </button>
+      <p style="text-align:center;font-size:0.78rem;color:var(--text-m);margin-top:1rem;cursor:pointer;" onclick="showResetHint()">
+        Forgot PIN? Reset with your server credentials
+      </p>
+    </div>
+  </div>
+
+  <!-- MAIN LOGIN PAGE -->
+  <div class="login-card" id="login-card">
+
+    <div class="login-logo">
+      <span>Gift<b>rapture</b></span>
+      <p>Admin Dashboard — Sign In</p>
+    </div>
+
+    <div class="demo-badge">
+      Demo credentials pre-filled below
+      <strong id="auto-fill-btn" title="Click to fill">Click to auto-fill →</strong>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-input" id="username" placeholder="e.g. admin"
+             autocomplete="username" spellcheck="false"
+             onkeydown="if(event.key==='Enter') attemptLogin()" />
+      <div class="form-error" id="user-error">Username is required.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="password-wrap">
+        <input type="password" class="form-input" id="password" placeholder="Enter your password"
+               autocomplete="current-password"
+               onkeydown="if(event.key==='Enter') attemptLogin()" />
+        <button class="toggle-pwd" onclick="togglePassword(this)">👁</button>
+      </div>
+      <div class="form-error" id="pwd-error">Password is required.</div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-error" id="auth-error" style="margin-top:0.5rem;"></div>
+    </div>
+
+    <div class="form-row">
+      <label class="remember-me">
+        <input type="checkbox" id="remember-me" />
+        Remember me
+      </label>
+      <span class="forgot-link" onclick="showToast('Contact server admin to reset your password.')">
+        Forgot password?
+      </span>
+    </div>
+
+    <button class="btn-login" id="login-btn" onclick="attemptLogin()">
+      <span>Sign In to Dashboard</span>
+      <div class="spinner"></div>
+    </button>
+
+    <div class="login-footer">
+      <span id="status-text">Connecting to server…</span>
+    </div>
+
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(6px);
+    background:var(--pink-dark);color:#fff;padding:0.55rem 1.2rem;border-radius:2rem;
+    font-size:0.82rem;font-weight:500;opacity:0;transition:opacity 0.3s,transform 0.3s;z-index:9999;"></div>
+
+  <script>
+  // ── CONSTANTS ──────────────────────────────────────────
+  const API_BASE = 'http://localhost:5000/api';
+  const STORAGE_KEY = 'giftrapture_admin_token';
+  const DEMO_USER = { username: 'admin', password: 'admin123' };
+  const DEFAULT_PIN = '72006'; // change this for your pin lock — currently matches WhatsApp last digits
+
+  // ── HELPERS ───────────────────────────────────────────
+  function showToast(msg, duration = 2800) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(6px)'; }, duration);
+  }
+
+  function setError(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) { el.textContent = msg; el.classList.add('visible'); }
+    else       { el.textContent = '';  el.classList.remove('visible'); }
+  }
+
+  function setErrorsNone() {
+    setError('user-error'); setError('pwd-error'); setError('auth-error');
+  }
+
+  function togglePassword(btn) {
+    const input = btn.parentElement.querySelector('input');
+    input.type = input.type === 'password' ? 'text' : 'password';
+    btn.textContent = input.type === 'password' ? '👁' : '🙈';
+  }
+
+  function setLoading(loading) {
+    const btn = document.getElementById('login-btn');
+    btn.classList.toggle('loading', loading);
+    btn.disabled = loading;
+  }
+
+  // ── TOKEN MANAGEMENT ──────────────────────────────────
+  function storeToken(token, remember) {
+    if (remember) {
+      localStorage.setItem(STORAGE_KEY, token);
+    } else {
+      sessionStorage.setItem(STORAGE_KEY, token);
+    }
+  }
+
+  function getStoredToken() {
+    return localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
+  }
+
+  function clearToken() {
+    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
+  }
+
+  // ── AUTH FLOW ─────────────────────────────────────────
+  async function attemptLogin() {
+    setErrorsNone();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const remember = document.getElementById('remember-me').checked;
+
+    let hasErr = false;
+    if (!username) { setError('user-error', 'Username is required.'); hasErr = true; }
+    if (!password) { setError('pwd-error', 'Password is required.'); hasErr = true; }
+    if (hasErr) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setError('auth-error', data.message || 'Login failed. Please try again.');
+        setLoading(false);
+        return;
+      }
+      storeToken(data.token, remember);
+      showToast('Login successful! Redirecting…');
+      setTimeout(() => { window.location.href = 'giftrapture_admin.html'; }, 900);
+    } catch (err) {
+      // Server offline — fallback to demo mode
+      console.warn('Auth server unreachable, running in demo mode:', err);
+      if (username === DEMO_USER.username && password === DEMO_USER.password) {
+        const fakeToken = 'demo-' + btoa(username + ':' + Date.now());
+        storeToken(fakeToken, remember);
+        showToast('Demo mode — offline. Redirecting…');
+        setTimeout(() => { window.location.href = 'giftrapture_admin.html'; }, 900);
+      } else {
+        setError('auth-error', 'Cannot reach server. Demo mode accepts: admin / admin123');
+      }
+    }
+    setLoading(false);
+  }
+
+  function attemptUnlock() {
+    const pin = document.getElementById('pin-input').value.trim();
+    if (!pin) { setError('pin-error', 'Enter your PIN to unlock.'); return; }
+    if (pin !== DEFAULT_PIN) {
+      setError('pin-error', 'Incorrect PIN, please try again.');
+      document.getElementById('pin-btn').classList.add('shimmer');
+      setTimeout(() => document.getElementById('pin-btn').classList.remove('shimmer'), 1000);
+      return;
+    }
+    const btn = document.getElementById('pin-btn');
+    btn.innerHTML = '<span>Unlocking… <span class="spinner" style="display:inline-block;vertical-align:middle;margin-left:0.5rem;width:12px;height:12px;"></span></span>';
+    setTimeout(() => {
+      document.getElementById('lock-screen').classList.add('hidden');
+      const card = document.getElementById('login-card');
+      card.style.display = 'none';
+    }, 600);
+  }
+
+  function showResetHint() {
+    setError('auth-error', 'Default PIN: 636960 (change in login.html source when live)');
+    showToast('PIN lock is a client-side feature — set it before deploying.');
+  }
+
+  // ── AUTO-FILL DEMO ─────────────────────────────────────
+  document.getElementById('auto-fill-btn').addEventListener('click', () => {
+    document.getElementById('username').value = DEMO_USER.username;
+    document.getElementById('password').value = DEMO_USER.password;
+    document.getElementById('password').type = 'text';
+    showToast('Demo credentials filled! Click Sign In 👇');
+  });
+
+  // ── CHECK LIVE STATUS ON LOAD ─────────────────────────
+  async function checkServer() {
+    const statusEl = document.getElementById('status-text');
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 3000);
+      const res = await fetch(API_BASE, { signal: ctrl.signal });
+      clearTimeout(timer);
+      const d = await res.json();
+      statusEl.textContent = `🟢 Connected — Giftrapture API v${d.version}`;
+      statusEl.style.color = '#2a7a4b';
+    } catch (e) {
+      statusEl.textContent = '🔴 Server unreachable — demo mode available (admin / admin123)';
+      statusEl.style.color = '#b8365a';
+    }
+  }
+  checkServer();
+
+  // ── AUTO-OPEN LOCK if dashboard has no valid session (gsap flip hint)
+  // --- pulled automatically when admin.html integrates this script
+  </script>
+</body>
+</html>

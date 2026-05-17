@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Giftrapture Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --pink:#f7c5d0;--pink-deep:#e8879a;--pink-dark:#b85068;
+  --cream:#fdf8f2;--lav:#e8e0f0;--lav-deep:#c9b8e8;
+  --gold:#c9a96e;--gold-lt:#f0e0c0;
+  --sidebar-w:220px;
+  --text:#3a2a2a;--text-m:#7a6060;--border:rgba(200,160,140,0.22);
+  --white:#fff;--bg:#f8f4f0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;}
+h1,h2,h3{font-family:'Playfair Display',serif;}
+button{cursor:pointer;font-family:'Jost',sans-serif;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;min-height:100vh;padding:0;}
+.sidebar-logo{padding:1.5rem 1.2rem 1rem;border-bottom:1px solid var(--border);}
+.sidebar-logo span{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pink-dark);}
+.sidebar-logo span b{color:var(--gold);}
+.sidebar-tag{font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-m);margin-top:2px;}
+.nav-group{padding:1.2rem 0.8rem 0.5rem;}
+.nav-label{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-m);padding:0 0.5rem;margin-bottom:0.4rem;}
+.nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.5rem 0.75rem;border-radius:10px;font-size:0.84rem;font-weight:400;color:var(--text-m);cursor:pointer;transition:all 0.18s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:var(--cream);color:var(--text);}
+.nav-item.active{background:var(--pink);color:var(--pink-dark);font-weight:500;}
+.nav-item .icon{font-size:1rem;width:18px;text-align:center;}
+.sidebar-bottom{margin-top:auto;padding:1rem 0.8rem;border-top:1px solid var(--border);}
+.admin-pill{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.7rem;background:var(--cream);border-radius:10px;}
+.admin-avatar{width:30px;height:30px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:500;color:var(--pink-dark);}
+.admin-name{font-size:0.8rem;font-weight:500;}
+.admin-role{font-size:0.7rem;color:var(--text-m);}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.topbar-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pink-dark);}
+.topbar-right{display:flex;align-items:center;gap:0.75rem;}
+.notif-btn{position:relative;background:none;border:none;font-size:1.1rem;color:var(--text-m);padding:4px;}
+.notif-dot{position:absolute;top:2px;right:2px;width:7px;height:7px;background:var(--pink-dark);border-radius:50%;}
+.search-box{background:var(--cream);border:1px solid var(--border);border-radius:2rem;padding:0.3rem 0.9rem;font-size:0.82rem;color:var(--text);width:180px;font-family:'Jost',sans-serif;}
+.search-box:focus{outline:none;border-color:var(--pink);}
+
+/* CONTENT */
+.content{padding:1.75rem 2rem;flex:1;}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.75rem;}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;}
+.stat-label{font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-m);margin-bottom:0.4rem;}
+.stat-val{font-family:'Playfair Display',serif;font-size:1.65rem;color:var(--text);margin-bottom:0.25rem;}
+.stat-delta{font-size:0.75rem;}
+.delta-up{color:#2a7a4b;}
+.delta-down{color:#b8365a;}
+.stat-icon{float:right;font-size:1.5rem;opacity:0.6;}
+
+/* CHARTS AREA */
+.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1.75rem;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.4rem;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;}
+.card-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--text);}
+.card-sub{font-size:0.75rem;color:var(--text-m);margin-top:1px;}
+.badge{display:inline-block;font-size:0.68rem;font-weight:500;padding:2px 8px;border-radius:2rem;}
+.badge-pending{background:#fef3c7;color:#92400e;}
+.badge-confirmed{background:#d1fae5;color:#065f46;}
+.badge-dispatched{background:#dbeafe;color:#1e40af;}
+.badge-delivered{background:#ede9fe;color:#4c1d95;}
+.badge-cancelled{background:#fee2e2;color:#991b1b;}
+
+/* BAR CHART */
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:140px;padding:0 4px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bar{width:100%;background:var(--pink);border-radius:4px 4px 0 0;transition:height 0.4s ease;min-height:4px;}
+.bar:hover{background:var(--pink-dark);}
+.bar-lbl{font-size:0.65rem;color:var(--text-m);}
+.bar-val{font-size:0.65rem;color:var(--pink-dark);font-weight:500;}
+
+/* DONUT */
+.donut-wrap{display:flex;align-items:center;gap:1rem;margin-top:0.5rem;}
+svg.donut{transform:rotate(-90deg);}
+.donut-legend{display:flex;flex-direction:column;gap:6px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:0.77rem;color:var(--text-m);}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* ORDERS TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+thead th{text-align:left;padding:0.5rem 0.75rem;font-size:0.68rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-m);border-bottom:1px solid var(--border);font-weight:500;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;}
+tbody tr:hover{background:var(--cream);}
+tbody td{padding:0.65rem 0.75rem;color:var(--text);}
+tbody tr:last-child{border-bottom:none;}
+.order-id{font-family:'Jost',sans-serif;font-size:0.75rem;color:var(--text-m);}
+.cust-name{font-weight:500;}
+
+/* ACTION BTNS */
+.act-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:0.74rem;color:var(--text-m);cursor:pointer;transition:all 0.18s;margin-right:4px;}
+.act-btn:hover{border-color:var(--pink-dark);color:var(--pink-dark);}
+.act-btn.danger:hover{border-color:#b8365a;color:#b8365a;}
+
+/* STATUS SELECT */
+.status-select{background:none;border:none;font-size:0.8rem;font-family:'Jost',sans-serif;cursor:pointer;padding:2px 4px;color:var(--text);}
+
+/* PRODUCT MGMT */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;}
+.prod-admin-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.prod-thumb{background:var(--lav);height:100px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
+.prod-body{padding:0.75rem 0.9rem;}
+.prod-admin-name{font-size:0.85rem;font-weight:500;margin-bottom:2px;}
+.prod-admin-price{font-size:0.78rem;color:var(--pink-dark);margin-bottom:0.5rem;}
+.prod-admin-actions{display:flex;gap:6px;}
+
+/* CUSTOMERS */
+.cust-table-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.4rem;}
+
+/* ANALYTICS extra */
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.top-prod-list{display:flex;flex-direction:column;gap:0.6rem;margin-top:0.5rem;}
+.top-prod-item{display:flex;align-items:center;gap:0.75rem;}
+.top-prod-bar{flex:1;background:var(--cream);border-radius:4px;height:8px;overflow:hidden;}
+.top-prod-fill{height:100%;background:var(--pink-deep);border-radius:4px;}
+.top-prod-name{font-size:0.8rem;width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.top-prod-pct{font-size:0.75rem;color:var(--text-m);width:32px;text-align:right;}
+
+/* ADMIN PIN LOCK OVERLAY (embedded — no external deps) */
+.locked-overlay{position:fixed;inset:0;background:rgba(253,248,242,0.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:9999;}
+
+/* FORM (shared) */
+.form-error{font-size:0.78rem;color:#b8365a;margin-top:0.3rem;min-height:1.2em;opacity:0;transition:opacity 0.2s;}
+.form-error.visible{opacity:1;}
+
+/* MODAL */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(60,30,30,0.35);z-index:200;align-items:center;justify-content:center;}
+.modal-backdrop.open{display:flex;}
+.modal{background:var(--white);border-radius:16px;width:min(480px,92vw);padding:1.75rem;border:1px solid var(--border);}
+.modal h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pink-dark);margin-bottom:1.2rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;}
+.form-group{display:flex;flex-direction:column;gap:4px;}
+.form-group label{font-size:0.75rem;color:var(--text-m);letter-spacing:0.06em;text-transform:uppercase;}
+.form-group input,.form-group select,.form-group textarea{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:0.45rem 0.7rem;font-size:0.85rem;font-family:'Jost',sans-serif;color:var(--text);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--pink-deep);}
+.form-group.full{grid-column:1/-1;}
+.modal-footer{display:flex;justify-content:flex-end;gap:0.75rem;margin-top:1.25rem;}
+.btn-cancel{background:none;border:1px solid var(--border);border-radius:2rem;padding:0.5rem 1.2rem;font-size:0.85rem;color:var(--text-m);}
+.btn-save{background:var(--pink-dark);color:#fff;border:none;border-radius:2rem;padding:0.5rem 1.4rem;font-size:0.85rem;font-weight:500;}
+.btn-save:hover{opacity:0.88;}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--pink-dark);color:#fff;padding:0.55rem 1.2rem;border-radius:2rem;font-size:0.83rem;font-weight:500;opacity:0;transition:opacity 0.3s,transform 0.3s;z-index:500;transform:translateY(6px);}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.page-header h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--pink-dark);}
+.btn-add{background:var(--pink-dark);color:#fff;border:none;border-radius:2rem;padding:0.45rem 1.2rem;font-size:0.82rem;font-weight:500;letter-spacing:0.03em;transition:opacity 0.2s;}
+.btn-add:hover{opacity:0.88;}
+
+@media(max-width:900px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .charts-row{grid-template-columns:1fr;}
+  .analytics-grid{grid-template-columns:1fr;}
+  .sidebar{width:60px;}
+  .nav-item span,.sidebar-logo .wordmark,.sidebar-tag,.admin-name,.admin-role{display:none;}
+  .sidebar-logo{padding:1rem 0.75rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- PIN LOCK OVERLAY (shown on every admin page load) -->
+<div class="locked-overlay" id="admin-pin-overlay">
+  <div class="login-card" style="width:min(360px,100%);">
+    <div class="login-logo">
+      <span>Gift<b>rapture</b></span>
+      <p>Enter PIN to unlock dashboard</p>
+    </div>
+    <div class="form-group">
+      <label>Admin PIN</label>
+      <input type="password" class="form-input" id="admin-pin-input" placeholder="••••" maxlength="8"
+             onkeydown="if(event.key==='Enter') verifyAdminPin()" />
+      <div class="form-error" id="admin-pin-error">Incorrect PIN, please try again.</div>
+    </div>
+    <button class="btn-login" onclick="verifyAdminPin()" id="admin-pin-btn">
+      <span>Unlock</span><div class="spinner"></div>
+    </button>
+    <p style="text-align:center;font-size:0.78rem;color:var(--text-m);margin-top:1rem;cursor:pointer;" onclick="showToast('Default PIN: 72006')">
+      Forgot PIN? Click here
+    </p>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div><span class="wordmark">Gift<b>rapture</b></span></div>
+    <div class="sidebar-tag">Admin Panel</div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Overview</div>
+    <button class="nav-item active" onclick="showPage('dashboard',this)">
+      <span class="icon">🏠</span><span>Dashboard</span>
+    </button>
+    <button class="nav-item" onclick="showPage('orders',this)">
+      <span class="icon">📦</span><span>Orders</span>
+    </button>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Catalogue</div>
+    <button class="nav-item" onclick="showPage('products',this)">
+      <span class="icon">🎁</span><span>Products</span>
+    </button>
+    <button class="nav-item" onclick="showPage('customers',this)">
+      <span class="icon">👥</span><span>Customers</span>
+    </button>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Insights</div>
+    <button class="nav-item" onclick="showPage('analytics',this)">
+      <span class="icon">📊</span><span>Analytics</span>
+    </button>
+    <button class="nav-item" onclick="showPage('settings',this)">
+      <span class="icon">⚙️</span><span>Settings</span>
+    </button>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="admin-pill">
+      <div class="admin-avatar">GR</div>
+      <div><div class="admin-name">Giftrapture</div><div class="admin-role">Loading…</div></div>
+    </div>
+    <button class="act-btn" style="width:100%;border-radius:8px;margin-top:0.5rem;font-size:0.8rem;justify-content:center;display:flex;align-items:center;gap:0.4rem;" onclick="logout()">⏻ Sign Out</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-right">
+      <input class="search-box" type="text" placeholder="🔍  Search orders, products..." id="search-input" oninput="handleSearch()" />
+      <button class="notif-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Revenue <span class="stat-icon">💰</span></div>
+          <div class="stat-val" id="stat-revenue">₹0</div>
+          <div class="stat-delta delta-up">↑ 18% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Orders <span class="stat-icon">📦</span></div>
+          <div class="stat-val" id="stat-orders">0</div>
+          <div class="stat-delta delta-up">↑ 12 new today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Customers <span class="stat-icon">👥</span></div>
+          <div class="stat-val" id="stat-customers">0</div>
+          <div class="stat-delta delta-up">↑ 8 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Order Value <span class="stat-icon">✨</span></div>
+          <div class="stat-val" id="stat-avg">₹0</div>
+          <div class="stat-delta delta-down">↓ 3% vs last week</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Revenue — last 7 days</div><div class="card-sub">Daily breakdown</div></div>
+          </div>
+          <div class="bar-chart" id="revenue-chart"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Orders by status</div></div>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut" width="110" height="110" viewBox="0 0 110 110" id="donut-svg"></svg>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Recent orders</div><div class="card-sub">Latest 5</div></div>
+          <button class="act-btn" onclick="showPage('orders', document.querySelector('[onclick*=orders]'))">View all</button>
+        </div>
+        <div class="table-wrap"><table id="recent-orders-table"></table></div>
+      </div>
+    </div>
+
+    <!-- ORDERS PAGE -->
+    <div class="page" id="page-orders">
+      <div class="page-header">
+        <h2>All Orders</h2>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <select id="status-filter" onchange="renderOrdersTable()" style="background:var(--white);border:1px solid var(--border);border-radius:2rem;padding:0.38rem 0.9rem;font-size:0.82rem;font-family:'Jost',sans-serif;color:var(--text-m);cursor:pointer;">
+            <option value="all">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Dispatched">Dispatched</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <button class="btn-add" onclick="openAddOrderModal()">+ New Order</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-wrap"><table id="full-orders-table"></table></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS PAGE -->
+    <div class="page" id="page-products">
+      <div class="page-header">
+        <h2>Products</h2>
+        <button class="btn-add" onclick="openAddProductModal()">+ Add Product</button>
+      </div>
+      <div class="prod-grid" id="products-grid"></div>
+    </div>
+
+    <!-- CUSTOMERS PAGE -->
+    <div class="page" id="page-customers">
+      <div class="page-header"><h2>Customers</h2></div>
+      <div class="cust-table-card">
+        <div class="table-wrap"><table id="customers-table"></table></div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS PAGE -->
+    <div class="page" id="page-analytics">
+      <div class="page-header"><h2>Analytics</h2></div>
+      <div class="stats-grid" style="margin-bottom:1.25rem;">
+        <div class="stat-card"><div class="stat-label">This Month Revenue</div><div class="stat-val" id="an-rev">₹0</div><div class="stat-delta delta-up">↑ 22% vs last month</div></div>
+        <div class="stat-card"><div class="stat-label">Delivered Orders</div><div class="stat-val" id="an-delivered">0</div><div class="stat-delta delta-up">↑ 15 this week</div></div>
+        <div class="stat-card"><div class="stat-label">Pending Orders</div><div class="stat-val" id="an-pending">0</div><div class="stat-delta delta-down">Needs attention</div></div>
+        <div class="stat-card"><div class="stat-label">Cancellation Rate</div><div class="stat-val" id="an-cancel">0%</div><div class="stat-delta delta-up">↓ improving</div></div>
+      </div>
+      <div class="analytics-grid">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Top products by orders</div></div>
+          <div class="top-prod-list" id="top-products"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Revenue by category</div></div>
+          <div class="bar-chart" id="cat-chart" style="height:160px;"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:1rem;">
+        <div class="card-header"><div class="card-title">City-wise orders</div></div>
+        <div class="table-wrap"><table id="city-table"></table></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div class="page" id="page-settings">
+      <div class="page-header"><h2>Settings</h2></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Brand info</div></div>
+          <div class="form-group" style="margin-bottom:0.75rem;"><label>Brand Name</label><input type="text" value="Giftrapture" /></div>
+          <div class="form-group" style="margin-bottom:0.75rem;"><label>WhatsApp Number</label><input type="text" value="+91 72006 23758" /></div>
+          <div class="form-group" style="margin-bottom:0.75rem;"><label>Instagram Handle</label><input type="text" value="@giftrapture" /></div>
+          <div class="form-group" style="margin-bottom:1rem;"><label>Tagline</label><input type="text" value="Gift with Grace, Celebrate with Love" /></div>
+          <button class="btn-save" onclick="showToast('Settings saved!')">Save Changes</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Notifications</div></div>
+          <div style="display:flex;flex-direction:column;gap:0.9rem;font-size:0.85rem;">
+            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;"><input type="checkbox" checked /> New order WhatsApp alert</label>
+            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;"><input type="checkbox" checked /> Daily revenue summary</label>
+            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;"><input type="checkbox" /> Low stock alerts</label>
+            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;"><input type="checkbox" checked /> Customer review notifications</label>
+          </div>
+          <div class="card-header" style="margin-top:1.5rem;"><div class="card-title">Delivery settings</div></div>
+          <div class="form-group" style="margin-bottom:0.75rem;"><label>Free delivery above (₹)</label><input type="number" value="999" /></div>
+          <div class="form-group"><label>Delivery partner</label>
+            <select style="background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:0.45rem 0.7rem;font-size:0.85rem;font-family:'Jost',sans-serif;">
+              <option>Shiprocket</option><option>Delhivery</option><option>Bluedart</option><option>Self-managed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ADD ORDER MODAL -->
+<div class="modal-backdrop" id="order-modal">
+  <div class="modal">
+    <h3>New Order</h3>
+    <div class="form-row">
+      <div class="form-group"><label>Customer Name</label><input type="text" id="o-name" placeholder="Priya Sharma" /></div>
+      <div class="form-group"><label>Phone</label><input type="text" id="o-phone" placeholder="+91 98765 43210" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>City</label><input type="text" id="o-city" placeholder="Delhi" /></div>
+      <div class="form-group"><label>Status</label>
+        <select id="o-status">
+          <option>Pending</option><option>Confirmed</option><option>Dispatched</option><option>Delivered</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group full"><label>Products (comma-separated)</label><input type="text" id="o-products" placeholder="Blush Bridal Hamper, Sweet Box" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Total (₹)</label><input type="number" id="o-total" placeholder="1399" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('order-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveOrder()">Save Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal-backdrop" id="product-modal">
+  <div class="modal">
+    <h3>Add Product</h3>
+    <div class="form-row">
+      <div class="form-group"><label>Product Name</label><input type="text" id="p-name" placeholder="Blush Bridal Hamper" /></div>
+      <div class="form-group"><label>Emoji</label><input type="text" id="p-emoji" placeholder="💐" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Price (₹)</label><input type="number" id="p-price" placeholder="1800" /></div>
+      <div class="form-group"><label>Sale Price (₹)</label><input type="number" id="p-sale" placeholder="1399" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label>
+        <select id="p-cat"><option>Wedding</option><option>Return Gift</option><option>Corporate</option><option>Luxury</option></select>
+      </div>
+      <div class="form-group"><label>Relation</label>
+        <select id="p-rel"><option>Bride</option><option>Groom</option><option>Parents</option><option>Siblings</option><option>Corporate</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('product-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveProduct()">Add Product</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AUTH ───────────────────────────────────────────────
+const AUTH_TOKEN_KEY  = 'giftrapture_admin_token';
+const AUTH_API        = 'http://localhost:5000/api';
+
+function getToken() {
+  return localStorage.getItem(AUTH_TOKEN_KEY) || sessionStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+function clearToken() {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  sessionStorage.removeItem(AUTH_TOKEN_KEY);
+}
+
+function redirectToLogin() {
+  window.location.replace('login.html');
+}
+
+// ── ADMIN PIN LOCK ──────────────────────────────────────
+const ADMIN_PIN_SECRET = '72006';   // ⚠️ change before deploying
+const ADMIN_PIN_OK     = 'giftrapture_admin_pin_ok';
+
+function pinUnlocked() {
+  return sessionStorage.getItem(ADMIN_PIN_OK) === 'yes';
+}
+
+function showOverlay() {
+  var o = document.getElementById('admin-pin-overlay');
+  if (o) { o.style.display = 'flex'; }
+}
+
+function hideOverlay() {
+  var o = document.getElementById('admin-pin-overlay');
+  if (o) { o.style.display = 'none'; }
+  sessionStorage.setItem(ADMIN_PIN_OK, 'yes');
+}
+
+function lockPIN() {
+  sessionStorage.removeItem(ADMIN_PIN_OK);
+  sessionStorage.removeItem(AUTH_TOKEN_KEY);
+  showOverlay();
+  showToast('🔒 PIN locked — enter PIN to unlock');
+}
+
+// ── SIGN OUT ────────────────────────────────────────────
+function logout() {
+  var token = getToken();
+  if (token) {
+    try { fetch(AUTH_API + '/auth/logout', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ token })
+    }); } catch(e){}
+  }
+  clearToken();
+  sessionStorage.removeItem(ADMIN_PIN_OK);
+  redirectToLogin();
+}
+
+// ── BOOT SEQUENCE  (synchronous — no await to avoid blank screen) ────────────
+(function boot() {
+  // Step 1 — no JWT → go to login immediately
+  if (!getToken()) { redirectToLogin(); return; }
+
+  // Step 2 — already unlocked in this session → show dashboard & load data
+  if (pinUnlocked()) { __onPinUnlock(); return; }
+
+  // Step 3 — token present but PIN not yet entered → show overlay, hide body
+  document.body.style.visibility = 'hidden';
+
+  // ── PIN verify ──
+  window.verifyAdminPin = window.__verifyAdminPin = function() {
+    var input   = document.getElementById('admin-pin-input');
+    var errEl   = document.getElementById('admin-pin-error');
+    var btn     = document.getElementById('admin-pin-btn');
+    var pin     = (input && input.value || '').trim();
+
+    if (!pin) {
+      if (errEl) { errEl.textContent = 'Enter your PIN to unlock.'; errEl.classList.add('visible'); }
+      return;
+    }
+    if (btn) { btn.classList.add('loading'); btn.querySelector && (btn.querySelector('span').textContent = 'Checking…'); }
+
+    setTimeout(function() {
+      if (pin === ADMIN_PIN_SECRET) {
+        hideOverlay();
+        if (typeof __onPinUnlock === 'function') __onPinUnlock(); else init();
+        showToast('Dashboard unlocked 🔓');
+      } else {
+        if (errEl) { errEl.textContent = 'Incorrect PIN, please try again.'; errEl.classList.add('visible'); }
+        if (btn) { btn.classList.remove('loading'); btn.querySelector && (btn.querySelector('span').textContent = 'Unlock'); }
+        if (input) { input.value = ''; }
+      }
+    }, 350);
+  };
+
+  // auto-focus PIN, reveal body & overlay
+  setTimeout(function() {
+    document.body.style.visibility = 'visible';
+    showOverlay();
+    setTimeout(function() {
+      var inp = document.getElementById('admin-pin-input');
+      if (inp) { inp.focus(); }
+    }, 150);
+  }, 100);
+})();
+
+// ── LIVE SESSION CHECK (runs quietly in bg after PIN unlock)
+(function liveSessionCheck() {
+  if (!pinUnlocked()) return;
+  var token = getToken();
+  if (!token) return;
+  fetch(AUTH_API + '/auth/me', { headers: { Authorization: 'Bearer ' + token } })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.success && d.user) {
+        var el  = document.querySelector('.admin-name');
+        var rl  = document.querySelector('.admin-role');
+        if (el  && d.user) el.textContent   = d.user.name   || d.user.username;
+        if (rl  && d.user) rl.textContent   = d.user.role   || 'Admin';
+      }
+    })
+    .catch(function() {
+      clearToken(); redirectToLogin();
+    });
+})();
+
+// call Init only after PIN verified and body visible
+var __onPinUnlock = function() {
+  init();
+};
+</script>
+</body>
+</html>

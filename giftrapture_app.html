@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Giftrapture – Premium Wedding Hampers</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --pink: #f7c5d0;
+    --pink-deep: #e8879a;
+    --pink-dark: #b85068;
+    --cream: #fdf8f2;
+    --lavender: #e8e0f0;
+    --lavender-deep: #c9b8e8;
+    --gold: #c9a96e;
+    --gold-light: #f0e0c0;
+    --white: #fff;
+    --text: #3a2a2a;
+    --text-muted: #7a6060;
+    --border: rgba(200,160,140,0.25);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  h1,h2,h3,h4 { font-family: 'Playfair Display', serif; }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; width: 100%; }
+  button { cursor: pointer; font-family: 'Jost', sans-serif; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(253,248,242,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--pink-dark); letter-spacing: 0.02em; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+  .nav-links a:hover { color: var(--pink-dark); transition: color 0.2s; }
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+  .cart-btn {
+    background: var(--pink); border: none; border-radius: 2rem;
+    padding: 0.45rem 1.2rem; font-size: 0.82rem; font-weight: 500; color: var(--pink-dark);
+    letter-spacing: 0.04em; transition: background 0.2s;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .cart-btn:hover { background: var(--pink-deep); color: #fff; }
+  .login-btn { background: transparent; border: 1.5px solid var(--gold); border-radius: 2rem; padding: 0.4rem 1.1rem; font-size: 0.82rem; font-weight: 500; color: var(--gold); letter-spacing: 0.04em; transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+  .login-btn:hover { background: var(--gold-light); color: var(--text); }
+  .cart-badge {
+    background: var(--gold); color: #fff; border-radius: 50%;
+    width: 18px; height: 18px; font-size: 0.7rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero {
+    min-height: 92vh; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #fdf3f6 0%, #fdf8f2 40%, #f0ebf8 100%);
+    position: relative; overflow: hidden; text-align: center; padding: 4rem 2rem;
+  }
+  .hero-petals { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .petal {
+    position: absolute; border-radius: 50% 0 50% 0;
+    background: rgba(247,197,208,0.3); animation: floatPetal 8s ease-in-out infinite;
+  }
+  @keyframes floatPetal {
+    0%,100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+    50% { transform: translateY(-20px) rotate(15deg); opacity: 0.9; }
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+  .hero-eyebrow {
+    display: inline-block; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-light); border-radius: 2rem;
+    padding: 0.3rem 1rem; margin-bottom: 1.5rem;
+  }
+  .hero h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); color: var(--pink-dark); line-height: 1.1; margin-bottom: 0.5rem; }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero-sub { font-size: 1.05rem; color: var(--text-muted); font-weight: 300; margin: 1.2rem 0 2.2rem; line-height: 1.7; }
+  .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--pink-dark); color: #fff; border: none; border-radius: 2rem;
+    padding: 0.75rem 2rem; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.04em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(184,80,104,0.25);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(184,80,104,0.35); }
+  .btn-secondary {
+    background: transparent; color: var(--gold); border: 1.5px solid var(--gold);
+    border-radius: 2rem; padding: 0.75rem 2rem; font-size: 0.9rem; font-weight: 500;
+    letter-spacing: 0.04em; transition: background 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { background: var(--gold-light); }
+  .hero-trust { display: flex; gap: 2rem; justify-content: center; margin-top: 3rem; flex-wrap: wrap; }
+  .trust-pill {
+    display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;
+    color: var(--text-muted); background: rgba(255,255,255,0.7);
+    border: 1px solid var(--border); border-radius: 2rem; padding: 0.3rem 0.9rem;
+  }
+
+  /* SECTION */
+  section { padding: 5rem 2rem; }
+  .section-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--pink-dark); margin-bottom: 1rem; }
+  .section-sub { color: var(--text-muted); font-weight: 300; font-size: 0.95rem; max-width: 480px; line-height: 1.7; margin-bottom: 2.5rem; }
+  .section-header-center { text-align: center; }
+  .section-header-center .section-sub { margin-left: auto; margin-right: auto; }
+
+  /* SHOP BY PRICE */
+  .price-filters { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem; }
+  .price-chip {
+    background: var(--white); border: 1.5px solid var(--border); border-radius: 2rem;
+    padding: 0.55rem 1.4rem; font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .price-chip:hover, .price-chip.active {
+    background: var(--lavender); border-color: var(--lavender-deep); color: var(--text);
+  }
+
+  /* SHOP BY RELATIONS */
+  .relations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.2rem; max-width: 700px; margin: 0 auto; }
+  .relation-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 1.5rem;
+    padding: 1.8rem 1rem; text-align: center; transition: transform 0.22s, box-shadow 0.22s;
+    cursor: pointer;
+  }
+  .relation-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(184,80,104,0.12); border-color: var(--pink); }
+  .relation-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+  .relation-card h4 { font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--text); }
+
+  /* PRODUCT GRID */
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+  .product-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 1.25rem;
+    overflow: hidden; transition: transform 0.22s, box-shadow 0.22s;
+  }
+  .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(184,80,104,0.13); }
+  .product-img-wrap { position: relative; background: var(--lavender); height: 200px; overflow: hidden; }
+  .product-img-wrap .emoji { font-size: 5rem; display: flex; align-items: center; justify-content: center; height: 100%; }
+  .discount-badge {
+    position: absolute; top: 12px; right: 12px; background: var(--pink-dark); color: #fff;
+    font-size: 0.7rem; font-weight: 600; border-radius: 1rem; padding: 0.2rem 0.55rem;
+    letter-spacing: 0.04em;
+  }
+  .product-info { padding: 1rem 1.1rem 1.2rem; }
+  .product-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); margin-bottom: 0.4rem; }
+  .product-price { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.8rem; }
+  .sale-price { font-size: 1rem; font-weight: 600; color: var(--pink-dark); }
+  .reg-price { font-size: 0.82rem; text-decoration: line-through; color: var(--text-muted); }
+  .add-cart-btn {
+    width: 100%; background: var(--cream); border: 1.5px solid var(--pink);
+    border-radius: 2rem; padding: 0.5rem; font-size: 0.82rem; font-weight: 500;
+    color: var(--pink-dark); transition: all 0.2s; letter-spacing: 0.03em;
+  }
+  .add-cart-btn:hover { background: var(--pink); color: var(--white); }
+
+  /* MAKE YOUR BOX */
+  .make-box-section { background: linear-gradient(135deg, #fdf3f6, #f0ebf8); }
+  .make-box-container { max-width: 720px; margin: 0 auto; }
+  .box-cats { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .box-cat-btn {
+    background: var(--white); border: 1.5px solid var(--border); border-radius: 1rem;
+    padding: 0.6rem 1.1rem; font-size: 0.85rem; font-weight: 400; color: var(--text-muted);
+    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
+  }
+  .box-cat-btn:hover { border-color: var(--gold); color: var(--text); }
+  .box-cat-btn.selected { background: var(--gold-light); border-color: var(--gold); color: var(--text); }
+  .box-preview {
+    background: var(--white); border: 1px solid var(--border); border-radius: 1.5rem;
+    padding: 2rem; min-height: 180px;
+  }
+  .box-preview-title { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .box-items { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .box-item-tag {
+    background: var(--lavender); border: 1px solid var(--lavender-deep); border-radius: 2rem;
+    padding: 0.35rem 1rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text);
+  }
+  .box-remove { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; line-height: 1; cursor: pointer; }
+  .box-price-est { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted); }
+  .box-price-est strong { color: var(--pink-dark); font-size: 1.1rem; }
+  .box-whatsapp-btn {
+    margin-top: 1.2rem; width: 100%; background: #25d366; color: #fff; border: none;
+    border-radius: 2rem; padding: 0.75rem; font-size: 0.9rem; font-weight: 500;
+    letter-spacing: 0.04em; transition: opacity 0.2s;
+  }
+  .box-whatsapp-btn:hover { opacity: 0.88; }
+
+  /* REVIEWS */
+  .reviews-section { background: var(--cream); }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+  .review-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 1.25rem;
+    padding: 1.5rem; position: relative;
+  }
+  .review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.75rem; }
+  .review-text { font-size: 0.88rem; color: var(--text); line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
+  .review-author { display: flex; align-items: center; gap: 0.7rem; }
+  .review-avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: var(--pink);
+    display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  }
+  .review-name { font-size: 0.82rem; font-weight: 500; }
+  .review-occasion { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* CART PANEL */
+  .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(60,30,30,0.35); z-index: 200; }
+  .cart-overlay.open { display: block; }
+  .cart-panel {
+    position: fixed; right: 0; top: 0; bottom: 0; width: min(400px, 100vw);
+    background: var(--cream); z-index: 201; transform: translateX(100%);
+    transition: transform 0.3s ease; display: flex; flex-direction: column;
+    box-shadow: -8px 0 40px rgba(60,30,30,0.15);
+  }
+  .cart-panel.open { transform: translateX(0); }
+  .cart-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .cart-header h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--pink-dark); }
+  .cart-close-btn { background: none; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1.2rem; }
+  .cart-item { display: flex; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+  .cart-item-icon { font-size: 2rem; min-width: 48px; text-align: center; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; }
+  .cart-item-price { font-size: 0.82rem; color: var(--pink-dark); }
+  .cart-item-remove { background: none; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; }
+  .cart-footer { padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); }
+  .cart-total { display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 500; margin-bottom: 1rem; }
+  .cart-total span:last-child { color: var(--pink-dark); font-size: 1.1rem; }
+  .cart-whatsapp {
+    width: 100%; background: #25d366; color: #fff; border: none; border-radius: 2rem;
+    padding: 0.85rem; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.04em;
+    transition: opacity 0.2s;
+  }
+  .cart-whatsapp:hover { opacity: 0.88; }
+  .cart-empty { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+  .cart-empty span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+  /* FOOTER */
+  footer {
+    background: #2a1a1a; color: rgba(255,255,255,0.7);
+    padding: 3rem 2rem 1.5rem;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand .nav-logo { color: #f7c5d0; font-size: 1.3rem; }
+  .footer-brand p { font-size: 0.82rem; margin-top: 0.7rem; line-height: 1.7; color: rgba(255,255,255,0.5); max-width: 220px; }
+  .footer-col h5 { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .footer-col a { display: block; font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-bottom: 0.5rem; transition: color 0.2s; }
+  .footer-col a:hover { color: #fff; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.2rem; font-size: 0.75rem; color: rgba(255,255,255,0.35); text-align: center; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(6px);
+    background: var(--pink-dark); color: #fff; padding: 0.6rem 1.4rem;
+    border-radius: 2rem; font-size: 0.85rem; font-weight: 500; opacity: 0;
+    transition: opacity 0.3s, transform 0.3s; z-index: 500; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* SHOP PAGE */
+  .shop-hero { background: linear-gradient(135deg, #fdf3f6, #f0ebf8); padding: 3.5rem 2rem; text-align: center; }
+  .shop-filters { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); background: var(--white); }
+  .filter-btn { background: var(--white); border: 1px solid var(--border); border-radius: 2rem; padding: 0.4rem 1.1rem; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+  .filter-btn:hover, .filter-btn.active { background: var(--pink); border-color: var(--pink-deep); color: var(--pink-dark); font-weight: 500; }
+  .shop-grid-section { padding: 2.5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+  @media (max-width: 700px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 2.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Gift<span>rapture</span></div>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('shop')">Shop</a>
+    <a href="#bestsellers">Bestsellers</a>
+    <a href="#make-your-box">Customise</a>
+  </div>
+  <div class="nav-right">
+    <a href="login.html" class="login-btn">🔑 Admin Login</a>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛍️ Cart
+      <span class="cart-badge" id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <h3>Your Gift Bag</h3>
+    <button class="cart-close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>Total</span><span id="cart-total-val">₹0</span></div>
+    <button class="cart-whatsapp" onclick="checkoutWhatsApp()">📲 Order via WhatsApp</button>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div class="page active" id="home-page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-petals" id="petals"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">✦ PAN India Delivery</div>
+      <h1>Gift with <em>Grace</em>,<br>Celebrate with Love</h1>
+      <p class="hero-sub">Curated wedding gift hampers & return gifts for every beautiful occasion. Handpicked with love, delivered with care.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="openWhatsApp('Hi! I'd like to explore your wedding hampers.')">📲 Order on WhatsApp</button>
+        <button class="btn-secondary" onclick="showPage('shop')">Browse Collection</button>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-pill">✦ 500+ Happy Couples</div>
+        <div class="trust-pill">🎀 Custom Hampers</div>
+        <div class="trust-pill">🚚 Free Delivery ₹999+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOP BY PRICE -->
+  <section style="text-align:center; background: var(--white);">
+    <div class="section-label">Find Your Budget</div>
+    <h2 class="section-title">Shop by Price</h2>
+    <p class="section-sub" style="margin: 0 auto 2rem;">Every love story deserves a beautiful gift. Find the perfect hamper at every price point.</p>
+    <div class="price-filters" id="price-filters">
+      <button class="price-chip active" onclick="filterByPrice('all', this)">All Hampers</button>
+      <button class="price-chip" onclick="filterByPrice('under500', this)">Under ₹500</button>
+      <button class="price-chip" onclick="filterByPrice('500-1000', this)">₹500 – ₹1,000</button>
+      <button class="price-chip" onclick="filterByPrice('1000-2000', this)">₹1,000 – ₹2,000</button>
+      <button class="price-chip" onclick="filterByPrice('above2000', this)">₹2,000+</button>
+    </div>
+  </section>
+
+  <!-- BESTSELLERS -->
+  <section id="bestsellers" style="max-width:1200px; margin:0 auto;">
+    <div class="section-label">Most Loved</div>
+    <h2 class="section-title">Bestsellers</h2>
+    <p class="section-sub">Our most gifted hampers — because some things are universally adored.</p>
+    <div class="product-grid" id="bestsellers-grid"></div>
+  </section>
+
+  <!-- SHOP BY RELATIONS -->
+  <section style="text-align:center; background: linear-gradient(135deg,#fdf3f6,#f0ebf8);">
+    <div class="section-label">Thoughtfully Curated</div>
+    <h2 class="section-title">Shop by Relation</h2>
+    <p class="section-sub" style="margin: 0 auto 2.5rem;">Find the perfect hamper for every cherished person in your life.</p>
+    <div class="relations-grid">
+      <div class="relation-card" onclick="filterByRelation('Bride')">
+        <div class="relation-icon">👰</div>
+        <h4>For Bride</h4>
+      </div>
+      <div class="relation-card" onclick="filterByRelation('Groom')">
+        <div class="relation-icon">🤵</div>
+        <h4>For Groom</h4>
+      </div>
+      <div class="relation-card" onclick="filterByRelation('Parents')">
+        <div class="relation-icon">💐</div>
+        <h4>For Parents</h4>
+      </div>
+      <div class="relation-card" onclick="filterByRelation('Siblings')">
+        <div class="relation-icon">🎀</div>
+        <h4>For Siblings</h4>
+      </div>
+      <div class="relation-card" onclick="filterByRelation('Corporate')">
+        <div class="relation-icon">💼</div>
+        <h4>Corporate</h4>
+      </div>
+    </div>
+  </section>
+
+   <!-- MAKE YOUR BOX -->
+  <section id="make-your-box" class="make-box-section">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:2rem;">
+        <div class="section-label">Personalise</div>
+        <h2 class="section-title">Make Your Own Box</h2>
+        <p class="section-sub" style="margin:0 auto;">Choose your favourite items, adjust quantities, and we'll pack a bespoke hamper just for you.</p>
+      </div>
+
+      <!-- BUILDER GRID -->
+      <div style="display:grid;grid-template-columns:1fr min(340px,100%);gap:2rem;align-items:start;">
+
+        <!-- PRODUCT PICKER -->
+        <div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;">
+            Pick Items
+            <span id="box-item-count" style="background:var(--pink);color:var(--pink-dark);border-radius:2rem;font-size:0.72rem;padding:0.15rem 0.6rem;">0</span>
+          </h3>
+          <div class="product-grid" id="box-products-grid"></div>
+        </div>
+
+        <!-- STICKY SUMMARY PANEL -->
+        <div id="box-summary-sticky">
+          <div style="position:sticky;top:80px;">
+            <div class="card" id="box-summary-card" style="opacity:0.55;pointer-events:none;">
+              <div class="card-header">
+                <div><div class="card-title">Your Box</div><div class="card-sub" id="box-summary-sub">No items yet</div></div>
+                <button class="act-btn" onclick="clearBox()" id="box-clear-btn" style="display:none;">Clear All</button>
+              </div>
+              <div id="box-box-items" style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1rem;min-height:40px;">
+                <p style="font-size:0.82rem;color:var(--text-m);text-align:center;padding:0.75rem 0;">Click items on the left to add them here.</p>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.75rem;border-top:1px solid var(--border);margin-bottom:0.5rem;">
+                <span style="font-size:0.82rem;color:var(--text-m);">Subtotal</span>
+                <span style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--pink-dark);" id="box-subtotal">₹0</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;font-size:0.8rem;color:var(--text-m);">
+                <span>+ Packaging &amp; delivery (flat)</span>
+                <span>+₹199</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.5rem;border-top:1px solid var(--border);margin-bottom:1rem;">
+                <span style="font-size:0.85rem;font-weight:500;">Total</span>
+                <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--pink-dark);" id="box-total">₹0</span>
+              </div>
+              <button class="box-whatsapp-btn" id="box-inquiry-btn" style="display:none;" onclick="orderBoxWhatsApp()">
+                Order This Box via WhatsApp
+              </button>
+              <button class="add-cart-btn" id="box-add-cart-btn" style="display:none;margin-top:0.5rem;" onclick="addBoxToCart()">
+                Add Box to Bag
+              </button>
+            </div>
+            <p style="text-align:center;font-size:0.74rem;color:var(--text-m);margin-top:0.6rem;">Same-day quotation on WhatsApp</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews-section">
+    <div class="section-header-center">
+      <div class="section-label">Love Notes</div>
+      <h2 class="section-title">What Couples Say</h2>
+      <p class="section-sub">Real stories from real celebrations.</p>
+    </div>
+    <div class="reviews-grid" id="reviews-grid"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">Gift<span style="color:var(--gold)">rapture</span></div>
+        <p>Premium wedding & return gift hampers, delivered PAN India with love and elegance.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#">About Us</a>
+        <a href="#">Blog</a>
+        <a href="#">Instagram</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Help</h5>
+        <a href="#">Shipping Policy</a>
+        <a href="#">Return & Refund</a>
+        <a href="#">Track Order</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 Giftrapture. All rights reserved. Made with 💕 in India.</div>
+  </footer>
+
+</div><!-- /home-page -->
+
+<!-- SHOP PAGE -->
+<div class="page" id="shop-page">
+  <div class="shop-hero">
+    <div class="section-label">Our Collection</div>
+    <h1 class="section-title">All Hampers</h1>
+    <p class="section-sub" style="margin: 0 auto;">Discover our full range of curated gift hampers for weddings, return gifts, and corporate gifting.</p>
+  </div>
+  <div class="shop-filters" id="shop-filters">
+    <button class="filter-btn active" onclick="applyShopFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="applyShopFilter('Wedding', this)">Wedding</button>
+    <button class="filter-btn" onclick="applyShopFilter('Return Gift', this)">Return Gifts</button>
+    <button class="filter-btn" onclick="applyShopFilter('Corporate', this)">Corporate</button>
+    <button class="filter-btn" onclick="applyShopFilter('Luxury', this)">Luxury</button>
+  </div>
+  <div class="shop-grid-section">
+    <div class="product-grid" id="shop-grid"></div>
+  </div>
+  <footer>
+    <div class="footer-bottom" style="color:rgba(255,255,255,0.4)">© 2025 Giftrapture. Made with 💕 in India.</div>
+  </footer>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────
+const products = [
+  { id:1, name:"Blush Bridal Hamper", emoji:"💐", price:1800, salePrice:1399, category:"Wedding", relation:"Bride", priceRange:"1000-2000", tags:["Skincare","Candle","Jewellery"] },
+  { id:2, name:"Groom's Grooming Box", emoji:"🎩", price:1200, salePrice:999, category:"Wedding", relation:"Groom", priceRange:"500-1000", tags:["Cologne","Wallet","Card Holder"] },
+  { id:3, name:"Golden Blessings Hamper", emoji:"✨", price:2800, salePrice:2199, category:"Luxury", relation:"Parents", priceRange:"above2000", tags:["Dry Fruits","Silver Coins","Shawl"] },
+  { id:4, name:"Sweet Celebration Box", emoji:"🍫", price:699, salePrice:549, category:"Return Gift", relation:"Siblings", priceRange:"500-1000", tags:["Chocolates","Candle","Card"] },
+  { id:5, name:"Mehendi Morning Kit", emoji:"🌸", price:450, salePrice:349, category:"Return Gift", relation:"Bride", priceRange:"under500", tags:["Kumkum","Bangles","Incense"] },
+  { id:6, name:"Corporate Elegance Set", emoji:"💼", price:1500, salePrice:1199, category:"Corporate", relation:"Corporate", priceRange:"1000-2000", tags:["Diary","Pen","Tea Box"] },
+  { id:7, name:"Couple's First Home Box", emoji:"🏡", price:3200, salePrice:2599, category:"Luxury", relation:"Bride", priceRange:"above2000", tags:["Photo Frame","Plants","Candles"] },
+  { id:8, name:"Sibling Love Hamper", emoji:"🎀", price:800, salePrice:649, category:"Wedding", relation:"Siblings", priceRange:"500-1000", tags:["Chocolates","Photo Book","Charm"] },
+  { id:9, name:"Heritage Dry Fruits Box", emoji:"🌰", price:1100, salePrice:899, category:"Return Gift", relation:"Parents", priceRange:"500-1000", tags:["Almonds","Cashews","Dates"] },
+  { id:10, name:"Pastel Pamper Kit", emoji:"🌷", price:599, salePrice:449, category:"Wedding", relation:"Bride", priceRange:"under500", tags:["Face Mask","Lotion","Scrub"] },
+  { id:11, name:"Aromatic Luxury Candle Set", emoji:"🕯️", price:950, salePrice:749, category:"Return Gift", relation:"Siblings", priceRange:"500-1000", tags:["3 Candles","Match Sticks","Tray"] },
+  { id:12, name:"Premium Silver Puja Box", emoji:"🪔", price:2400, salePrice:1999, category:"Luxury", relation:"Parents", priceRange:"1000-2000", tags:["Silver Diya","Agarbatti","Puja Thali"] },
+];
+
+const reviews = [
+  { name:"Priya Sharma", occasion:"Wedding, Delhi", text:"Giftrapture made our return gifts absolutely unforgettable! Every guest kept complimenting the packaging. Will order again for our anniversary!", stars:5, avatar:"💕" },
+  { name:"Rohan & Neha Mehta", occasion:"Wedding, Mumbai", text:"We ordered 200 bridal hampers and they delivered every single one perfectly. The quality blew us away for the price.", stars:5, avatar:"👰" },
+  { name:"Sunita Agarwal", occasion:"Corporate Event, Pune", text:"Our entire team loved the corporate hampers. Such a thoughtful touch — we'll make this a tradition every Diwali!", stars:5, avatar:"✨" },
+  { name:"Deepika R.", occasion:"Engagement, Bangalore", text:"The 'Make Your Box' feature on WhatsApp was so easy. They customised everything in under 2 hours!", stars:5, avatar:"🎀" },
+  { name:"Ananya & Vikram", occasion:"Wedding, Hyderabad", text:"Absolutely stunning hampers for our parents. The golden blessings box made my mother-in-law cry tears of joy. 10/10!", stars:5, avatar:"🌸" },
+  { name:"Rahul Kapoor", occasion:"Corporate, Chennai", text:"Fast delivery to Chennai, elegant packaging, excellent quality. The team was so responsive on WhatsApp.", stars:5, avatar:"💼" },
+];
+
+// ─── STATE ───────────────────────────────────────────────
+let cart = [];
+let currentPriceFilter = 'all';
+let currentShopFilter = 'all';
+
+// each entry: { product, qty } keyed by product.id
+const boxCart = new Map();
+
+// ─── RENDER ───────────────────────────────────────────────
+function renderProducts(list, containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!list.length) { el.innerHTML = '<p style="color:var(--text-muted);grid-column:1/-1;padding:2rem 0;">No hampers found in this filter.</p>'; return; }
+  el.innerHTML = list.map(p => `
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="emoji">${p.emoji}</div>
+        <div class="discount-badge">${Math.round((1 - p.salePrice/p.price)*100)}% OFF</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">
+          <span class="sale-price">₹${p.salePrice}</span>
+          <span class="reg-price">₹${p.price}</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart(${p.id})">Add to Bag 🛍️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderReviews() {
+  const el = document.getElementById('reviews-grid');
+  if (!el) return;
+  el.innerHTML = reviews.map(r => `
+    <div class="review-card">
+      <div class="review-stars">${'★'.repeat(r.stars)}</div>
+      <div class="review-text">"${r.text}"</div>
+      <div class="review-author">
+        <div class="review-avatar">${r.avatar}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-occasion">${r.occasion}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// each entry: { product, qty } keyed by product.id
+const boxCart = new Map();
+
+function renderBoxPicker() {
+  const el = document.getElementById('box-products-grid');
+  if (!el) return;
+  el.innerHTML = products.map(p => {
+    const qty  = boxCart.get(p.id) || 0;
+    const selected = qty > 0;
+    return `<div class="product-card" id="box-item-card-${p.id}" style="${selected ? 'border-color:var(--pink);box-shadow:0 0 0 2px rgba(184,80,104,0.18);' : ''}">
+      <div class="product-img-wrap">
+        <div class="emoji">${p.emoji}</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">
+          <span class="sale-price">₹${p.salePrice} <span style="font-size:0.72rem;font-weight:400;color:var(--text-m);">each</span></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.25rem;justify-content:flex-end;">
+          ${qty > 0
+            ? `<button class="${qty===1 ? 'add-cart-btn' : 'add-cart-btn'}" onclick="changeBoxQty(event,${p.id},-1)" title="Remove">✕</button>
+               <span style="font-size:0.85rem;font-weight:600;color:var(--pink-dark);min-width:1.4em;text-align:center;">${qty}</span>`
+            : ''
+          }
+          <button class="${qty > 0 ? 'add-cart-btn' : 'add-cart-btn'}"
+            onclick="changeBoxQty(event,${p.id},1)"
+            style="${!qty && 'opacity:0.75;'}"
+            title="Add to box">
+            ${qty > 0 ? '＋ Add more' : '＋ Add'}
+          </button>
+        </div>
+      </div>
+    </div>`;}).join('');
+}
+
+function changeBoxQty(event, pid, delta) {
+  event && event.stopPropagation();
+  const product = products.find(p => p.id === pid);
+  if (!product) return;
+  const current = boxCart.get(pid) || 0;
+  const next    = current + delta;
+  if (next <= 0) boxCart.delete(pid); else boxCart.set(pid, next);
+  renderBoxPicker();
+  renderBoxSummary();
+}
+
+function clearBox() {
+  boxCart.clear();
+  renderBoxPicker();
+  renderBoxSummary();
+  showToast('Box cleared');
+}
+
+function renderBoxSummary() {
+  const itemsEl   = document.getElementById('box-box-items');
+  const subtotalEl= document.getElementById('box-subtotal');
+  const totalEl   = document.getElementById('box-total');
+  const subLblEl  = document.getElementById('box-summary-sub');
+  const cardEl    = document.getElementById('box-summary-card');
+  const countEl   = document.getElementById('box-item-count');
+  const clearBtn  = document.getElementById('box-clear-btn');
+  const wiBtn     = document.getElementById('box-inquiry-btn');
+  const cartBtn   = document.getElementById('box-add-cart-btn');
+
+  const itemIds = Array.from(boxCart.keys());
+  const totalCount = itemIds.reduce((s,id) => s + (boxCart.get(id)||0), 0);
+  if (countEl) countEl.textContent = totalCount;
+
+  if (!itemIds.length) {
+    if (itemsEl) itemsEl.innerHTML = '<p style="font-size:0.82rem;color:var(--text-m);text-align:center;padding:0.75rem 0;">Click items on the left to add them here.</p>';
+    if (subtotalEl) subtotalEl.textContent = '₹0';
+    if (totalEl)    totalEl.textContent    = '₹0';
+    if (subLblEl)  subLblEl.textContent  = 'No items yet';
+    if (cardEl)   { cardEl.style.opacity='0.55'; cardEl.style.pointerEvents='none'; }
+    if (clearBtn) clearBtn.style.display = 'none';
+    if (wiBtn)    wiBtn.style.display    = 'none';
+    if (cartBtn)  cartBtn.style.display   = 'none';
+    return;
+  }
+
+  if (cardEl)   { cardEl.style.opacity='1'; cardEl.style.pointerEvents='auto'; }
+  if (clearBtn) clearBtn.style.display = '';
+  if (wiBtn)    wiBtn.style.display    = '';
+  if (cartBtn)  cartBtn.style.display   = '';
+
+  if (subLblEl) subLblEl.textContent  = `${itemIds.length} item${itemIds.length>1?'s':''} · ${totalCount} piece${totalCount>1?'s':''}`;
+
+  if (itemsEl) {
+    itemsEl.innerHTML = itemIds.map(id => {
+      const p    = products.find(x => x.id === id);
+      const qty  = boxCart.get(id);
+      const line = p.salePrice * qty;
+      return `<div class="box-item-tag">
+        <strong>${p.emoji} ${p.name}</strong>
+        <span style="font-size:0.78rem;color:var(--text-m);flex:1;text-align:center;">${qty} × ₹${p.salePrice} = ₹${line}</span>
+        <div style="display:flex;align-items:center;gap:0.35rem;">
+          <button onclick="changeBoxQty(null,${p.id},-1)" style="background:var(--cream);border:1px solid var(--border);border-radius:4px;width:22px;height:22px;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-m);">−</button>
+          <span style="font-size:0.8rem;min-width:1.2em;text-align:center;font-weight:500;">${qty}</span>
+          <button onclick="changeBoxQty(null,${p.id},1)"  style="background:var(--cream);border:1px solid var(--border);border-radius:4px;width:22px;height:22px;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--pink-dark);">＋</button>
+          <button onclick="changeBoxQty(null,${p.id},-${qty})" title="Remove" style="background:none;border:none;color:var(--text-m);font-size:0.82rem;cursor:pointer;margin-left:0.15rem;">✕</button>
+        </div>
+      </div>`;}).join('');
+  }
+
+  const subtotal = itemIds.reduce((s,id) => s + (products.find(p=>p.id===id)?.salePrice||0) * (boxCart.get(id)||0), 0);
+  const grand    = subtotal + 199;
+  if (subtotalEl) subtotalEl.textContent = '₹' + subtotal.toLocaleString('en-IN');
+  if (totalEl)    totalEl.textContent    = '₹' + grand.toLocaleString('en-IN');
+}
+
+function addBoxToCart() {
+  boxCart.forEach((qty, pid) => {
+    const p = products.find(x => x.id === pid);
+    if (!p) return;
+    for (let i = 0; i < qty; i++) cart.push({...p});
+  });
+  clearBox();
+  renderCart();
+  showToast('Box added to bag! 🎁');
+  setTimeout(() => toggleCart(), 800);
+}
+
+function orderBoxWhatsApp() {
+  if (!boxCart.size) return;
+  const lines  = [];
+  let subtotal = 0;
+  boxCart.forEach((qty, pid) => {
+    const p     = products.find(x => x.id === pid);
+    const line  = p.salePrice * qty;
+    subtotal   += line;
+    lines.push(`  ${p.emoji} ${p.name} × ${qty}  — ₹${line}`);
+  });
+  const grand  = subtotal + 199;
+  const msg = encodeURIComponent(
+    `Hi Giftrapture! 🎀 I'd like to build a custom box:\n\n${lines.join('\n')}\n\nSubtotal: ₹${subtotal}\nBox & delivery: ₹199\nGrand total: ₹${grand}\n\nPlease confirm availability and share delivery details. Thank you!`
+  );
+  openWhatsApp(msg);
+}
+
+function renderCart() {
+  const totalEl = document.getElementById('cart-total-val');
+  const countEl = document.getElementById('cart-count');
+  countEl.textContent = cart.length;
+  if (!cart.length) {
+    listEl.innerHTML = '<div class="cart-empty"><span>🛍️</span><p>Your gift bag is empty.<br>Start adding beautiful hampers!</p></div>';
+    if (totalEl) totalEl.textContent = '₹0';
+    return;
+  }
+  listEl.innerHTML = cart.map((item, idx) => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">₹${item.salePrice}</div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button>
+    </div>
+  `).join('');
+  const total = cart.reduce((s, i) => s + i.salePrice, 0);
+  if (totalEl) totalEl.textContent = `₹${total}`;
+}
+
+// ─── ACTIONS ───────────────────────────────────────────────
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  if (p) {
+    cart.push({...p});
+    renderCart();
+    showToast(`${p.emoji} ${p.name} added to bag!`);
+  }
+}
+
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  renderCart();
+}
+
+function toggleCart() {
+  const panel = document.getElementById('cart-panel');
+  const overlay = document.getElementById('cart-overlay');
+  panel.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+function filterByPrice(range, btn) {
+  document.querySelectorAll('#price-filters .price-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPriceFilter = range;
+  const filtered = range === 'all' ? products : products.filter(p => p.priceRange === range);
+  renderProducts(filtered, 'bestsellers-grid');
+}
+
+function filterByRelation(rel) {
+  showPage('shop');
+  setTimeout(() => {
+    const filtered = products.filter(p => p.relation === rel);
+    renderProducts(filtered, 'shop-grid');
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  }, 100);
+}
+
+function applyShopFilter(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat === 'all' ? products : products.filter(p => p.category === cat);
+  renderProducts(filtered, 'shop-grid');
+}
+
+function showPage(page) {
+  document.getElementById('home-page').classList.toggle('active', page === 'home');
+  document.getElementById('shop-page').classList.toggle('active', page === 'shop');
+  window.scrollTo(0, 0);
+  if (page === 'shop') renderProducts(products, 'shop-grid');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function openWhatsApp(msg) {
+  const num = '917200623758';
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+async function checkoutWhatsApp() {
+  if (!cart.length) { showToast('Your bag is empty!'); return; }
+  const items = cart.map(i => `• ${i.name} – ₹${i.salePrice}`).join('%0A');
+  const total = cart.reduce((s, i) => s + i.salePrice, 0);
+  const msg = `Hello Giftrapture! 🎀%0A%0AI'd like to order:%0A${items}%0A%0ATotal: ₹${total}%0A%0APlease share delivery details. Thank you!`;
+  // Send order to backend so admin dashboard picks it up
+  try {
+    await fetch('http://localhost:5000/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customerName: 'Website Customer', phone: '', city: '', cartItems: cart, total }),
+    });
+  } catch(e) { console.warn('Backend order sync failed (server may be offline):', e); }
+  openWhatsApp(decodeURIComponent(msg));
+}
+
+// ─── PETALS ANIMATION ───────────────────────────────────
+function spawnPetals() {
+  const container = document.getElementById('petals');
+  if (!container) return;
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const size = 20 + Math.random() * 40;
+    p.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*6}s;animation-duration:${6+Math.random()*5}s;`;
+    container.appendChild(p);
+  }
+}
+
+// ─── INIT ───────────────────────────────────────────────
+spawnPetals();
+renderProducts(products, 'bestsellers-grid');
+renderReviews();
+renderBoxPicker();
+renderBoxSummary();
+renderCart();
+</script>
+</body>
+</html>

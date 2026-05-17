@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server.js" },
+    { "source": "/",        "destination": "/giftrapture_app.html" },
+    { "source": "/shop",    "destination": "/giftrapture_app.html" },
+    { "source": "/admin",   "destination": "/giftrapture_admin.html" },
+    { "source": "/login",   "destination": "/login.html" },
+    { "source": "/(.*)",    "destination": "/$1" }
+  ]
+}

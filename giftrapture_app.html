@@ -7,18 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --pink: #f7c5d0;
-    --pink-deep: #e8879a;
-    --pink-dark: #b85068;
-    --cream: #fdf8f2;
-    --lavender: #e8e0f0;
-    --lavender-deep: #c9b8e8;
-    --gold: #c9a96e;
-    --gold-light: #f0e0c0;
-    --white: #fff;
-    --text: #3a2a2a;
-    --text-muted: #7a6060;
-    --border: rgba(200,160,140,0.25);
+    /* Gift-logo palette */
+    --cream:        #FDF8F2;
+    --gold:         #C8A96E;
+    --gold-lt:      #EDDCs4;
+    --gold-deep:    #9A7B4C;
+    --blush:        #F7C5D0;
+    --blush-deep:   #E899A9;
+    --blush-dark:   #B85068;
+    --sand:         #F0E9E1;
+    --text:         #2A1E14;
+    --text-m:       #7A6555;
+    --border:       rgba(200,160,140,0.22);
+    --white:        #fff;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
@@ -36,18 +37,18 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 2rem; height: 64px;
   }
-  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--pink-dark); letter-spacing: 0.02em; }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--blush-dark); letter-spacing: 0.02em; }
   .nav-logo span { color: var(--gold); }
-  .nav-links { display: flex; gap: 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
-  .nav-links a:hover { color: var(--pink-dark); transition: color 0.2s; }
+  .nav-links { display: flex; gap: 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-m); }
+  .nav-links a:hover { color: var(--blush-dark); transition: color 0.2s; }
   .nav-right { display: flex; align-items: center; gap: 0.6rem; }
   .cart-btn {
-    background: var(--pink); border: none; border-radius: 2rem;
-    padding: 0.45rem 1.1rem; font-size: 0.82rem; font-weight: 500; color: var(--pink-dark);
+    background: var(--blush); border: none; border-radius: 2rem;
+    padding: 0.45rem 1.1rem; font-size: 0.82rem; font-weight: 500; color: var(--blush-dark);
     letter-spacing: 0.04em; transition: background 0.2s;
     display: flex; align-items: center; gap: 0.4rem;
   }
-  .cart-btn:hover { background: var(--pink-deep); color: #fff; }
+  .cart-btn:hover { background: var(--blush-deep); color: #fff; }
   .login-btn { background: transparent; border: 1.5px solid var(--gold); border-radius: 2rem; padding: 0.38rem 1rem; font-size: 0.8rem; font-weight: 500; color: var(--gold); letter-spacing: 0.04em; transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
   .login-btn:hover { background: var(--gold-light); color: var(--text); }
   .cart-badge {
@@ -55,6 +56,10 @@
     width: 18px; height: 18px; font-size: 0.7rem; font-weight: 600;
     display: flex; align-items: center; justify-content: center;
   }
+
+  /* LOGO IMAGE */
+  .logo-img { height: 38px; width: auto; display: block; object-fit: contain; }
+  @media(max-width:600px){ .logo-img { height: 32px; } }
 
   /* HAMBURGER */
   .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
@@ -77,7 +82,7 @@
   .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(60,30,30,0.28); z-index: 999; }
   .drawer-backdrop.open { display: block; }
   .drawer-close { align-self: flex-end; background: none; border: none; font-size: 1.4rem; color: var(--text-m); cursor: pointer; margin-bottom: 1rem; }
-  .drawer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--pink-dark); margin-bottom: 1.5rem; }
+  .drawer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--blush-dark); margin-bottom: 1.5rem; }
   .drawer-logo span { color: var(--gold); }
   .drawer-nav { display: flex; flex-direction: column; gap: 0.2rem; }
   .drawer-nav a, .drawer-nav button {
@@ -85,7 +90,7 @@
     color: var(--text); border: none; background: none; cursor: pointer;
     border-radius: 8px; text-align: left; font-family: 'Jost', sans-serif;
   }
-  .drawer-nav a:hover, .drawer-nav button:hover { background: var(--cream); color: var(--pink-dark); }
+  .drawer-nav a:hover, .drawer-nav button:hover { background: var(--cream); color: var(--blush-dark); }
   .drawer-bottom { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.6rem; }
   .drawer-logout-btn { color: var(--text-m); font-size: 0.88rem; background: none; border: none; cursor: pointer; font-family: 'Jost', sans-serif; text-align: left; display: flex; align-items: center; gap: 0.5rem; }
 
@@ -114,12 +119,12 @@
     color: var(--gold); border: 1px solid var(--gold-light); border-radius: 2rem;
     padding: 0.3rem 1rem; margin-bottom: 1.5rem;
   }
-  .hero h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); color: var(--pink-dark); line-height: 1.1; margin-bottom: 0.5rem; }
+  .hero h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); color: var(--blush-dark); line-height: 1.1; margin-bottom: 0.5rem; }
   .hero h1 em { color: var(--gold); font-style: italic; }
-  .hero-sub { font-size: 1.05rem; color: var(--text-muted); font-weight: 300; margin: 1.2rem 0 2.2rem; line-height: 1.7; }
+  .hero-sub { font-size: 1.05rem; color: var(--text-m); font-weight: 300; margin: 1.2rem 0 2.2rem; line-height: 1.7; }
   .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
   .btn-primary {
-    background: var(--pink-dark); color: #fff; border: none; border-radius: 2rem;
+    background: var(--blush-dark); color: #fff; border: none; border-radius: 2rem;
     padding: 0.75rem 2rem; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.04em;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 4px 20px rgba(184,80,104,0.25);
@@ -134,15 +139,15 @@
   .hero-trust { display: flex; gap: 2rem; justify-content: center; margin-top: 3rem; flex-wrap: wrap; }
   .trust-pill {
     display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;
-    color: var(--text-muted); background: rgba(255,255,255,0.7);
+    color: var(--text-m); background: rgba(255,255,255,0.7);
     border: 1px solid var(--border); border-radius: 2rem; padding: 0.3rem 0.9rem;
   }
 
   /* SECTION */
   section { padding: 5rem 2rem; }
   .section-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--pink-dark); margin-bottom: 1rem; }
-  .section-sub { color: var(--text-muted); font-weight: 300; font-size: 0.95rem; max-width: 480px; line-height: 1.7; margin-bottom: 2.5rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--blush-dark); margin-bottom: 1rem; }
+  .section-sub { color: var(--text-m); font-weight: 300; font-size: 0.95rem; max-width: 480px; line-height: 1.7; margin-bottom: 2.5rem; }
   .section-header-center { text-align: center; }
   .section-header-center .section-sub { margin-left: auto; margin-right: auto; }
 
@@ -150,11 +155,11 @@
   .price-filters { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem; }
   .price-chip {
     background: var(--white); border: 1.5px solid var(--border); border-radius: 2rem;
-    padding: 0.55rem 1.4rem; font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
+    padding: 0.55rem 1.4rem; font-size: 0.85rem; font-weight: 500; color: var(--text-m);
     transition: all 0.2s;
   }
   .price-chip:hover, .price-chip.active {
-    background: var(--lavender); border-color: var(--lavender-deep); color: var(--text);
+    background: var(--gold-lt); border-color: var(--gold-lt-deep); color: var(--text);
   }
 
   /* SHOP BY RELATIONS */
@@ -164,7 +169,7 @@
     padding: 1.8rem 1rem; text-align: center; transition: transform 0.22s, box-shadow 0.22s;
     cursor: pointer;
   }
-  .relation-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(184,80,104,0.12); border-color: var(--pink); }
+  .relation-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(184,80,104,0.12); border-color: var(--blush); }
   .relation-icon { font-size: 2rem; margin-bottom: 0.7rem; }
   .relation-card h4 { font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--text); }
 
@@ -175,24 +180,24 @@
     overflow: hidden; transition: transform 0.22s, box-shadow 0.22s;
   }
   .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(184,80,104,0.13); }
-  .product-img-wrap { position: relative; background: var(--lavender); height: 200px; overflow: hidden; }
+  .product-img-wrap { position: relative; background: var(--gold-lt); height: 200px; overflow: hidden; }
   .product-img-wrap .emoji { font-size: 5rem; display: flex; align-items: center; justify-content: center; height: 100%; }
   .discount-badge {
-    position: absolute; top: 12px; right: 12px; background: var(--pink-dark); color: #fff;
+    position: absolute; top: 12px; right: 12px; background: var(--blush-dark); color: #fff;
     font-size: 0.7rem; font-weight: 600; border-radius: 1rem; padding: 0.2rem 0.55rem;
     letter-spacing: 0.04em;
   }
   .product-info { padding: 1rem 1.1rem 1.2rem; }
   .product-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); margin-bottom: 0.4rem; }
   .product-price { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.8rem; }
-  .sale-price { font-size: 1rem; font-weight: 600; color: var(--pink-dark); }
-  .reg-price { font-size: 0.82rem; text-decoration: line-through; color: var(--text-muted); }
+  .sale-price { font-size: 1rem; font-weight: 600; color: var(--blush-dark); }
+  .reg-price { font-size: 0.82rem; text-decoration: line-through; color: var(--text-m); }
   .add-cart-btn {
-    width: 100%; background: var(--cream); border: 1.5px solid var(--pink);
+    width: 100%; background: var(--cream); border: 1.5px solid var(--blush);
     border-radius: 2rem; padding: 0.5rem; font-size: 0.82rem; font-weight: 500;
-    color: var(--pink-dark); transition: all 0.2s; letter-spacing: 0.03em;
+    color: var(--blush-dark); transition: all 0.2s; letter-spacing: 0.03em;
   }
-  .add-cart-btn:hover { background: var(--pink); color: var(--white); }
+  .add-cart-btn:hover { background: var(--blush); color: var(--white); }
 
   /* MAKE YOUR BOX */
   .make-box-section { background: linear-gradient(135deg, #fdf3f6, #f0ebf8); }
@@ -200,7 +205,7 @@
   .box-cats { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
   .box-cat-btn {
     background: var(--white); border: 1.5px solid var(--border); border-radius: 1rem;
-    padding: 0.6rem 1.1rem; font-size: 0.85rem; font-weight: 400; color: var(--text-muted);
+    padding: 0.6rem 1.1rem; font-size: 0.85rem; font-weight: 400; color: var(--text-m);
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
   }
   .box-cat-btn:hover { border-color: var(--gold); color: var(--text); }
@@ -209,15 +214,15 @@
     background: var(--white); border: 1px solid var(--border); border-radius: 1.5rem;
     padding: 2rem; min-height: 180px;
   }
-  .box-preview-title { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .box-preview-title { font-size: 0.8rem; color: var(--text-m); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
   .box-items { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .box-item-tag {
-    background: var(--lavender); border: 1px solid var(--lavender-deep); border-radius: 2rem;
+    background: var(--gold-lt); border: 1px solid var(--gold-lt-deep); border-radius: 2rem;
     padding: 0.35rem 1rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text);
   }
-  .box-remove { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; line-height: 1; cursor: pointer; }
-  .box-price-est { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted); }
-  .box-price-est strong { color: var(--pink-dark); font-size: 1.1rem; }
+  .box-remove { background: none; border: none; color: var(--text-m); font-size: 0.9rem; line-height: 1; cursor: pointer; }
+  .box-price-est { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-m); }
+  .box-price-est strong { color: var(--blush-dark); font-size: 1.1rem; }
   .box-whatsapp-btn {
     margin-top: 1.2rem; width: 100%; background: #25d366; color: #fff; border: none;
     border-radius: 2rem; padding: 0.75rem; font-size: 0.9rem; font-weight: 500;
@@ -236,11 +241,11 @@
   .review-text { font-size: 0.88rem; color: var(--text); line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
   .review-author { display: flex; align-items: center; gap: 0.7rem; }
   .review-avatar {
-    width: 36px; height: 36px; border-radius: 50%; background: var(--pink);
+    width: 36px; height: 36px; border-radius: 50%; background: var(--blush);
     display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
   }
   .review-name { font-size: 0.82rem; font-weight: 500; }
-  .review-occasion { font-size: 0.75rem; color: var(--text-muted); }
+  .review-occasion { font-size: 0.75rem; color: var(--text-m); }
 
   /* CART PANEL */
   .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(60,30,30,0.35); z-index: 200; }
@@ -253,25 +258,25 @@
   }
   .cart-panel.open { transform: translateX(0); }
   .cart-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .cart-header h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--pink-dark); }
-  .cart-close-btn { background: none; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; }
+  .cart-header h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--blush-dark); }
+  .cart-close-btn { background: none; border: none; font-size: 1.4rem; color: var(--text-m); cursor: pointer; }
   .cart-items { flex: 1; overflow-y: auto; padding: 1.2rem; }
   .cart-item { display: flex; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
   .cart-item-icon { font-size: 2rem; min-width: 48px; text-align: center; }
   .cart-item-info { flex: 1; }
   .cart-item-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; }
-  .cart-item-price { font-size: 0.82rem; color: var(--pink-dark); }
-  .cart-item-remove { background: none; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; }
+  .cart-item-price { font-size: 0.82rem; color: var(--blush-dark); }
+  .cart-item-remove { background: none; border: none; color: var(--text-m); font-size: 1rem; cursor: pointer; }
   .cart-footer { padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); }
   .cart-total { display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 500; margin-bottom: 1rem; }
-  .cart-total span:last-child { color: var(--pink-dark); font-size: 1.1rem; }
+  .cart-total span:last-child { color: var(--blush-dark); font-size: 1.1rem; }
   .cart-whatsapp {
     width: 100%; background: #25d366; color: #fff; border: none; border-radius: 2rem;
     padding: 0.85rem; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.04em;
     transition: opacity 0.2s;
   }
   .cart-whatsapp:hover { opacity: 0.88; }
-  .cart-empty { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+  .cart-empty { text-align: center; padding: 3rem 1rem; color: var(--text-m); }
   .cart-empty span { font-size: 3rem; display: block; margin-bottom: 1rem; }
 
   /* FOOTER */
@@ -290,7 +295,7 @@
   /* TOAST */
   .toast {
     position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(6px);
-    background: var(--pink-dark); color: #fff; padding: 0.6rem 1.4rem;
+    background: var(--blush-dark); color: #fff; padding: 0.6rem 1.4rem;
     border-radius: 2rem; font-size: 0.85rem; font-weight: 500; opacity: 0;
     transition: opacity 0.3s, transform 0.3s; z-index: 500; white-space: nowrap;
   }
@@ -299,8 +304,8 @@
   /* SHOP PAGE */
   .shop-hero { background: linear-gradient(135deg, #fdf3f6, #f0ebf8); padding: 3.5rem 2rem; text-align: center; }
   .shop-filters { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); background: var(--white); }
-  .filter-btn { background: var(--white); border: 1px solid var(--border); border-radius: 2rem; padding: 0.4rem 1.1rem; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
-  .filter-btn:hover, .filter-btn.active { background: var(--pink); border-color: var(--pink-deep); color: var(--pink-dark); font-weight: 500; }
+  .filter-btn { background: var(--white); border: 1px solid var(--border); border-radius: 2rem; padding: 0.4rem 1.1rem; font-size: 0.8rem; color: var(--text-m); cursor: pointer; transition: all 0.2s; }
+  .filter-btn:hover, .filter-btn.active { background: var(--blush); border-color: var(--blush-deep); color: var(--blush-dark); font-weight: 500; }
   .shop-grid-section { padding: 2.5rem 2rem; max-width: 1200px; margin: 0 auto; }
 
   @media (max-width: 900px) {
@@ -396,7 +401,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Gift<span>rapture</span></div>
+  <div class="nav-logo"><img src="giftlogo.PNG" alt="Giftrapture" class="logo-img" /></div>
 
   <!-- desktop links – hidden on mobile via media query -->
   <div class="nav-links" id="nav-links-desktop">
@@ -541,7 +546,7 @@
         <div>
           <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;">
             Pick Items
-            <span id="box-item-count" style="background:var(--pink);color:var(--pink-dark);border-radius:2rem;font-size:0.72rem;padding:0.15rem 0.6rem;">0</span>
+            <span id="box-item-count" style="background:var(--blush);color:var(--blush-dark);border-radius:2rem;font-size:0.72rem;padding:0.15rem 0.6rem;">0</span>
           </h3>
           <div class="product-grid" id="box-products-grid"></div>
         </div>
@@ -559,7 +564,7 @@
               </div>
               <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.75rem;border-top:1px solid var(--border);margin-bottom:0.5rem;">
                 <span style="font-size:0.82rem;color:var(--text-m);">Subtotal</span>
-                <span style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--pink-dark);" id="box-subtotal">₹0</span>
+                <span style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--blush-dark);" id="box-subtotal">₹0</span>
               </div>
               <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;font-size:0.8rem;color:var(--text-m);">
                 <span>+ Packaging &amp; delivery (flat)</span>
@@ -567,7 +572,7 @@
               </div>
               <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.5rem;border-top:1px solid var(--border);margin-bottom:1rem;">
                 <span style="font-size:0.85rem;font-weight:500;">Total</span>
-                <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--pink-dark);" id="box-total">₹0</span>
+                <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--blush-dark);" id="box-total">₹0</span>
               </div>
               <button class="box-whatsapp-btn" id="box-inquiry-btn" style="display:none;" onclick="orderBoxWhatsApp()">
                 Order This Box via WhatsApp
@@ -687,7 +692,7 @@ const boxCart = new Map();
 function renderProducts(list, containerId) {
   const el = document.getElementById(containerId);
   if (!el) return;
-  if (!list.length) { el.innerHTML = '<p style="color:var(--text-muted);grid-column:1/-1;padding:2rem 0;">No hampers found in this filter.</p>'; return; }
+  if (!list.length) { el.innerHTML = '<p style="color:var(--text-m);grid-column:1/-1;padding:2rem 0;">No hampers found in this filter.</p>'; return; }
   el.innerHTML = list.map(p => `
     <div class="product-card">
       <div class="product-img-wrap">
@@ -731,7 +736,7 @@ function renderBoxPicker() {
   el.innerHTML = products.map(p => {
     const qty  = boxCart.get(p.id) || 0;
     const selected = qty > 0;
-    return `<div class="product-card" id="box-item-card-${p.id}" style="${selected ? 'border-color:var(--pink);box-shadow:0 0 0 2px rgba(184,80,104,0.18);' : ''}">
+    return `<div class="product-card" id="box-item-card-${p.id}" style="${selected ? 'border-color:var(--blush);box-shadow:0 0 0 2px rgba(184,80,104,0.18);' : ''}">
       <div class="product-img-wrap">
         <div class="emoji">${p.emoji}</div>
       </div>
@@ -743,7 +748,7 @@ function renderBoxPicker() {
         <div style="display:flex;align-items:center;gap:0.25rem;justify-content:flex-end;">
           ${qty > 0
             ? `<button class="add-cart-btn box-rel-btn" data-pid="${p.id}" data-delta="-1" title="Remove one">✕</button>
-               <span style="font-size:0.85rem;font-weight:600;color:var(--pink-dark);min-width:1.4em;text-align:center;">${qty}</span>`
+               <span style="font-size:0.85rem;font-weight:600;color:var(--blush-dark);min-width:1.4em;text-align:center;">${qty}</span>`
             : ''
           }
           <button class="add-cart-btn box-rel-btn"

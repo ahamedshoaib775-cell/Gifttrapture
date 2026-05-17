@@ -7,10 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --pink:#f7c5d0;--pink-deep:#e8879a;--pink-dark:#b85068;
-      --cream:#fdf8f2;--lav:#e8e0f0;--lav-deep:#c9b8e8;
-      --gold:#c9a96e;--gold-lt:#f0e0c0;
-      --text:#3a2a2a;--text-m:#7a6060;--border:rgba(200,160,140,0.22);
+      --cream:#FDF8F2;--gold:#C8A96E;--gold-lt:#EDDCs4;--blush:#F7C5D0;--blush-dark:#B85068;
+      --text:#2A1E14;--text-m:#7A6555;--border:rgba(200,160,140,0.22);--white:#fff;
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body {
@@ -29,8 +27,7 @@
       padding:2.5rem 2rem;width:min(420px,100%);box-shadow:0 12px 48px rgba(184,80,104,0.08);
     }
     .login-logo { text-align:center;margin-bottom:2rem; }
-    .login-logo span { font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--pink-dark);letter-spacing:0.02em; }
-    .login-logo span b { color:var(--gold); }
+    .login-logo img { height:40px;width:auto;display:block;margin:0 auto 0.3rem;object-fit:contain; }
     .login-logo p { font-size:0.82rem;color:var(--text-m);margin-top:0.35rem;letter-spacing:0.04em; }
 
     /* FORM */
@@ -44,7 +41,7 @@
       padding:0.65rem 0.9rem;font-size:0.92rem;font-family:'Jost',sans-serif;color:var(--text);
       transition:border-color 0.2s,box-shadow 0.2s;
     }
-    .form-input:focus { outline:none;border-color:var(--pink-deep);box-shadow:0 0 0 3px rgba(232,135,154,0.15); }
+    .form-input:focus { outline:none;border-color:var(--blush-deep);box-shadow:0 0 0 3px rgba(232,135,154,0.15); }
     .form-input::placeholder { color:var(--text-m);opacity:0.55; }
 
     .form-error { font-size:0.78rem;color:#b8365a;margin-top:0.3rem;min-height:1em;opacity:0;transition:opacity 0.2s; }
@@ -61,13 +58,13 @@
     /* REMEMBER */
     .form-row { display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem; }
     .remember-me { display:flex;align-items:center;gap:0.45rem;font-size:0.82rem;color:var(--text-m);cursor:pointer; }
-    .remember-me input { accent-color:var(--pink-dark);width:15px;height:15px; }
-    .forgot-link { font-size:0.82rem;color:var(--pink-dark);cursor:pointer;transition:color 0.2s; }
-    .forgot-link:hover { color:var(--pink); }
+    .remember-me input { accent-color:var(--blush-dark);width:15px;height:15px; }
+    .forgot-link { font-size:0.82rem;color:var(--blush-dark);cursor:pointer;transition:color 0.2s; }
+    .forgot-link:hover { color:var(--blush-deep); }
 
     /* BUTTON */
     .btn-login {
-      width:100%;background:var(--pink-dark);color:#fff;border:none;border-radius:12px;
+      width:100%;background:var(--blush-dark);color:#fff;border:none;border-radius:12px;
       padding:0.75rem;font-size:0.92rem;font-weight:500;letter-spacing:0.04em;
       transition:opacity 0.2s,transform 0.15s;position:relative;
     }
@@ -90,14 +87,14 @@
 
     /* DEMO BADGE */
     .demo-badge {
-      text-align:center;background:var(--pink);border-radius:10px;padding:0.75rem 1rem;
-      font-size:0.78rem;color:var(--pink-dark);margin-bottom:1.25rem;
+      text-align:center;background:var(--blush);border-radius:10px;padding:0.75rem 1rem;
+      font-size:0.78rem;color:var(--blush-dark);margin-bottom:1.25rem;
     }
     .demo-badge strong { display:block;margin-top:0.25rem;cursor:pointer;letter-spacing:0.05em;user-select:all; }
 
     /* FOOTER */
     .login-footer { text-align:center;margin-top:1.5rem;font-size:0.78rem;color:var(--text-m); }
-    .login-footer a { color:var(--pink-dark);cursor:pointer; }
+    .login-footer a { color:var(--blush-dark);cursor:pointer; }
 
     /* LOCK SCREEN */
     .locked-overlay {
@@ -131,9 +128,22 @@
   <div class="locked-overlay" id="lock-screen">
     <div class="login-card">
       <div class="login-logo">
-        <span>Gift<b>rapture</b></span>
-        <p>Admin Panel is locked</p>
-      </div>
+      <img src="giftlogo.PNG" alt="Giftrapture" style="height:34px;width:auto;display:block;margin:0 auto 0.3rem;object-fit:contain;" />
+      <p>Admin Panel is locked</p>
+    </div>
+    <div class="form-group">
+      <label>Admin PIN</label>
+      <input type="password" class="form-input" id="pin-input" placeholder="••••" maxlength="8"
+             onkeydown="if(event.key==='Enter') attemptUnlock()" />
+      <div class="form-error" id="pin-error">Incorrect PIN, please try again.</div>
+    </div>
+    <button class="btn-login" onclick="attemptUnlock()" id="pin-btn">
+      <span>Unlock</span><div class="spinner"></div>
+    </button>
+    <p style="text-align:center;font-size:0.78rem;color:var(--text-m);margin-top:1rem;cursor:pointer;" onclick="showResetHint()">
+      Forgot PIN? Reset with your server credentials
+    </p>
+  </div>
       <p style="text-align:center;font-size:0.85rem;color:var(--text-m);margin-bottom:1.5rem;">
         Enter your PIN to unlock the dashboard
       </p>
@@ -156,7 +166,7 @@
   <div class="login-card" id="login-card">
 
     <div class="login-logo">
-      <span>Gift<b>rapture</b></span>
+      <img src="giftlogo.PNG" alt="Giftrapture" style="height:40px;width:auto;display:block;margin:0 auto 0.3rem;object-fit:contain;" />
       <p>Admin Dashboard — Sign In</p>
     </div>
 
@@ -211,7 +221,7 @@
 
   <!-- TOAST -->
   <div id="toast" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(6px);
-    background:var(--pink-dark);color:#fff;padding:0.55rem 1.2rem;border-radius:2rem;
+      background:var(--blush-dark);color:#fff;padding:0.55rem 1.2rem;border-radius:2rem;
     font-size:0.82rem;font-weight:500;opacity:0;transition:opacity 0.3s,transform 0.3s;z-index:9999;"></div>
 
   <script>

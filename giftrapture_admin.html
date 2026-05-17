@@ -6,46 +6,56 @@
 <title>Giftrapture Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-:root {
-  --pink:#f7c5d0;--pink-deep:#e8879a;--pink-dark:#b85068;
-  --cream:#fdf8f2;--lav:#e8e0f0;--lav-deep:#c9b8e8;
-  --gold:#c9a96e;--gold-lt:#f0e0c0;
-  --sidebar-w:220px;
-  --text:#3a2a2a;--text-m:#7a6060;--border:rgba(200,160,140,0.22);
-  --white:#fff;--bg:#f8f4f0;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;}
+  :root {
+    /* Gift-logo brand palette — mirrors giftrapture_app.html */
+    --cream:        #FDF8F2;
+    --gold:         #C8A96E;
+    --gold-lt:      #EDDCs4;
+    --gold-deep:    #9A7B4C;
+    --blush:        #F7C5D0;
+    --blush-deep:   #E899A9;
+    --blush-dark:   #B85068;
+    --sand:         #F0E9E1;
+    --text:         #2A1E14;
+    --text-m:       #7A6555;
+    --border:       rgba(200,160,140,0.22);
+    --white:        #fff;
+    --sidebar-w:220px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;}
 h1,h2,h3{font-family:'Playfair Display',serif;}
 button{cursor:pointer;font-family:'Jost',sans-serif;}
 
 /* SIDEBAR */
-.sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;min-height:100vh;padding:0;}
-.sidebar-logo{padding:1.5rem 1.2rem 1rem;border-bottom:1px solid var(--border);}
-.sidebar-logo span{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pink-dark);}
-.sidebar-logo span b{color:var(--gold);}
-.sidebar-tag{font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-m);margin-top:2px;}
+  .sidebar{width:var(--sidebar-w);background:var(--cream);border-right:1px solid var(--border);display:flex;flex-direction:column;min-height:100vh;padding:0;}
+  .sidebar-logo{padding:1.4rem 1.2rem 0.9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.6rem;}
+  .sidebar-logo .logo-img{height:30px;width:auto;object-fit:contain;}
+  .sidebar-tag{font-size:0.64rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-m);}
+  .nav-logo-img{height:28px;width:auto;object-fit:contain;}
+  /* login overlay mini-brand */
+  .login-brand-img{height:32px;width:auto;object-fit:contain;display:block;margin:0 auto 0.35rem;}
 .nav-group{padding:1.2rem 0.8rem 0.5rem;}
 .nav-label{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-m);padding:0 0.5rem;margin-bottom:0.4rem;}
 .nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.5rem 0.75rem;border-radius:10px;font-size:0.84rem;font-weight:400;color:var(--text-m);cursor:pointer;transition:all 0.18s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;}
 .nav-item:hover{background:var(--cream);color:var(--text);}
-.nav-item.active{background:var(--pink);color:var(--pink-dark);font-weight:500;}
+.nav-item.active{background:var(--blush);color:var(--blush-dark);font-weight:500;}
 .nav-item .icon{font-size:1rem;width:18px;text-align:center;}
 .sidebar-bottom{margin-top:auto;padding:1rem 0.8rem;border-top:1px solid var(--border);}
 .admin-pill{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.7rem;background:var(--cream);border-radius:10px;}
-.admin-avatar{width:30px;height:30px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:500;color:var(--pink-dark);}
+.admin-avatar{width:30px;height:30px;border-radius:50%;background:var(--blush);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:500;color:var(--blush-dark);}
 .admin-name{font-size:0.8rem;font-weight:500;}
 .admin-role{font-size:0.7rem;color:var(--text-m);}
 
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;}
 .topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;}
-.topbar-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pink-dark);}
+.topbar-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--blush-dark);}
 .topbar-right{display:flex;align-items:center;gap:0.75rem;}
 .notif-btn{position:relative;background:none;border:none;font-size:1.1rem;color:var(--text-m);padding:4px;}
-.notif-dot{position:absolute;top:2px;right:2px;width:7px;height:7px;background:var(--pink-dark);border-radius:50%;}
+.notif-dot{position:absolute;top:2px;right:2px;width:7px;height:7px;background:var(--blush-dark);border-radius:50%;}
 .search-box{background:var(--cream);border:1px solid var(--border);border-radius:2rem;padding:0.3rem 0.9rem;font-size:0.82rem;color:var(--text);width:180px;font-family:'Jost',sans-serif;}
-.search-box:focus{outline:none;border-color:var(--pink);}
+.search-box:focus{outline:none;border-color:var(--blush);}
 
 /* CONTENT */
 .content{padding:1.75rem 2rem;flex:1;}
@@ -80,10 +90,10 @@ button{cursor:pointer;font-family:'Jost',sans-serif;}
 /* BAR CHART */
 .bar-chart{display:flex;align-items:flex-end;gap:6px;height:140px;padding:0 4px;}
 .bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.bar{width:100%;background:var(--pink);border-radius:4px 4px 0 0;transition:height 0.4s ease;min-height:4px;}
-.bar:hover{background:var(--pink-dark);}
+.bar{width:100%;background:var(--blush);border-radius:4px 4px 0 0;transition:height 0.4s ease;min-height:4px;}
+.bar:hover{background:var(--blush-dark);}
 .bar-lbl{font-size:0.65rem;color:var(--text-m);}
-.bar-val{font-size:0.65rem;color:var(--pink-dark);font-weight:500;}
+.bar-val{font-size:0.65rem;color:var(--blush-dark);font-weight:500;}
 
 /* DONUT */
 .donut-wrap{display:flex;align-items:center;gap:1rem;margin-top:0.5rem;}
@@ -105,7 +115,7 @@ tbody tr:last-child{border-bottom:none;}
 
 /* ACTION BTNS */
 .act-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:0.74rem;color:var(--text-m);cursor:pointer;transition:all 0.18s;margin-right:4px;}
-.act-btn:hover{border-color:var(--pink-dark);color:var(--pink-dark);}
+.act-btn:hover{border-color:var(--blush-dark);color:var(--blush-dark);}
 .act-btn.danger:hover{border-color:#b8365a;color:#b8365a;}
 
 /* STATUS SELECT */
@@ -114,10 +124,10 @@ tbody tr:last-child{border-bottom:none;}
 /* PRODUCT MGMT */
 .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;}
 .prod-admin-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.prod-thumb{background:var(--lav);height:100px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
+.prod-thumb{background:var(--gold-lt);height:100px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
 .prod-body{padding:0.75rem 0.9rem;}
 .prod-admin-name{font-size:0.85rem;font-weight:500;margin-bottom:2px;}
-.prod-admin-price{font-size:0.78rem;color:var(--pink-dark);margin-bottom:0.5rem;}
+.prod-admin-price{font-size:0.78rem;color:var(--blush-dark);margin-bottom:0.5rem;}
 .prod-admin-actions{display:flex;gap:6px;}
 
 /* CUSTOMERS */
@@ -128,7 +138,7 @@ tbody tr:last-child{border-bottom:none;}
 .top-prod-list{display:flex;flex-direction:column;gap:0.6rem;margin-top:0.5rem;}
 .top-prod-item{display:flex;align-items:center;gap:0.75rem;}
 .top-prod-bar{flex:1;background:var(--cream);border-radius:4px;height:8px;overflow:hidden;}
-.top-prod-fill{height:100%;background:var(--pink-deep);border-radius:4px;}
+.top-prod-fill{height:100%;background:var(--blush-deep);border-radius:4px;}
 .top-prod-name{font-size:0.8rem;width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .top-prod-pct{font-size:0.75rem;color:var(--text-m);width:32px;text-align:right;}
 
@@ -143,26 +153,26 @@ tbody tr:last-child{border-bottom:none;}
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(60,30,30,0.35);z-index:200;align-items:center;justify-content:center;}
 .modal-backdrop.open{display:flex;}
 .modal{background:var(--white);border-radius:16px;width:min(480px,92vw);padding:1.75rem;border:1px solid var(--border);}
-.modal h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pink-dark);margin-bottom:1.2rem;}
+.modal h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--blush-dark);margin-bottom:1.2rem;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;}
 .form-group{display:flex;flex-direction:column;gap:4px;}
 .form-group label{font-size:0.75rem;color:var(--text-m);letter-spacing:0.06em;text-transform:uppercase;}
 .form-group input,.form-group select,.form-group textarea{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:0.45rem 0.7rem;font-size:0.85rem;font-family:'Jost',sans-serif;color:var(--text);}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--pink-deep);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--blush-deep);}
 .form-group.full{grid-column:1/-1;}
 .modal-footer{display:flex;justify-content:flex-end;gap:0.75rem;margin-top:1.25rem;}
 .btn-cancel{background:none;border:1px solid var(--border);border-radius:2rem;padding:0.5rem 1.2rem;font-size:0.85rem;color:var(--text-m);}
-.btn-save{background:var(--pink-dark);color:#fff;border:none;border-radius:2rem;padding:0.5rem 1.4rem;font-size:0.85rem;font-weight:500;}
+.btn-save{background:var(--blush-dark);color:#fff;border:none;border-radius:2rem;padding:0.5rem 1.4rem;font-size:0.85rem;font-weight:500;}
 .btn-save:hover{opacity:0.88;}
 
 /* TOAST */
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--pink-dark);color:#fff;padding:0.55rem 1.2rem;border-radius:2rem;font-size:0.83rem;font-weight:500;opacity:0;transition:opacity 0.3s,transform 0.3s;z-index:500;transform:translateY(6px);}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--blush-dark);color:#fff;padding:0.55rem 1.2rem;border-radius:2rem;font-size:0.83rem;font-weight:500;opacity:0;transition:opacity 0.3s,transform 0.3s;z-index:500;transform:translateY(6px);}
 .toast.show{opacity:1;transform:translateY(0);}
 
 /* PAGE HEADER */
 .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
-.page-header h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--pink-dark);}
-.btn-add{background:var(--pink-dark);color:#fff;border:none;border-radius:2rem;padding:0.45rem 1.2rem;font-size:0.82rem;font-weight:500;letter-spacing:0.03em;transition:opacity 0.2s;}
+.page-header h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--blush-dark);}
+.btn-add{background:var(--blush-dark);color:#fff;border:none;border-radius:2rem;padding:0.45rem 1.2rem;font-size:0.82rem;font-weight:500;letter-spacing:0.03em;transition:opacity 0.2s;}
 .btn-add:hover{opacity:0.88;}
 
   @media(max-width:900px){
@@ -216,11 +226,11 @@ tbody tr:last-child{border-bottom:none;}
 
 <!-- PIN LOCK OVERLAY (shown on every admin page load) -->
 <div class="locked-overlay" id="admin-pin-overlay">
-  <div class="login-card" style="width:min(360px,100%);">
-    <div class="login-logo">
-      <span>Gift<b>rapture</b></span>
-      <p>Enter PIN to unlock dashboard</p>
-    </div>
+   <div class="login-card" style="width:min(360px,100%);">
+     <div class="login-logo">
+       <img src="giftlogo.PNG" class="login-brand-img" alt="Giftrapture" />
+       <p>Enter PIN to unlock dashboard</p>
+     </div>
     <div class="form-group">
       <label>Admin PIN</label>
       <input type="password" class="form-input" id="admin-pin-input" placeholder="••••" maxlength="8"
@@ -239,8 +249,8 @@ tbody tr:last-child{border-bottom:none;}
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div><span class="wordmark">Gift<b>rapture</b></span></div>
-    <div class="sidebar-tag">Admin Panel</div>
+    <img src="giftlogo.PNG" class="logo-img sidebar-logo-img" alt="Giftrapture" />
+    <span class="sidebar-tag">Admin Panel</span>
   </div>
   <div class="nav-group">
     <div class="nav-label">Overview</div>

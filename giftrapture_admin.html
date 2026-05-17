@@ -604,6 +604,24 @@ function logout() {
   }, 100);
 })();
 
+// ── NO-OP STUBS (safety guards for stale inline onclick handlers) ─
+// These exist on the shop page (giftrapture_app.html) only, but if any
+// stale inline handler fires on this admin page we catch it silently.
+function filterByRelation()  { window.location.href = 'giftrapture_app.html'; }
+function filterByPrice()     { window.location.href = 'giftrapture_app.html'; }
+function applyShopFilter()   { window.location.href = 'giftrapture_app.html'; }
+function showPage(page, ctx) {
+  if (typeof ctx === 'string' || typeof ctx === 'object') {
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    if (ctx && ctx.classList) ctx.classList.add('active');
+  }
+  if (page === 'dashboard') renderDashboard();
+  if (page === 'orders')    renderOrdersTable();
+  if (page === 'products')  renderProductsGrid();
+  if (page === 'customers') renderCustomersTable();
+  if (page === 'analytics') renderAnalytics();
+}
+
 // ── LIVE SESSION CHECK (runs quietly in bg after PIN unlock)
 (function liveSessionCheck() {
   if (!pinUnlocked()) return;

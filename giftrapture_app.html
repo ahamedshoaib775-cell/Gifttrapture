@@ -724,9 +724,7 @@ function renderReviews() {
   `).join('');
 }
 
-// each entry: { product, qty } keyed by product.id
-const boxCart = new Map();
-
+// ─── RENDER: BOX BUILDER ─────────────────────────────────
 function renderBoxPicker() {
   const el = document.getElementById('box-products-grid');
   if (!el) return;

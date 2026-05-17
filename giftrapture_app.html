@@ -40,21 +40,54 @@
   .nav-logo span { color: var(--gold); }
   .nav-links { display: flex; gap: 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
   .nav-links a:hover { color: var(--pink-dark); transition: color 0.2s; }
-  .nav-right { display: flex; align-items: center; gap: 1rem; }
+  .nav-right { display: flex; align-items: center; gap: 0.6rem; }
   .cart-btn {
     background: var(--pink); border: none; border-radius: 2rem;
-    padding: 0.45rem 1.2rem; font-size: 0.82rem; font-weight: 500; color: var(--pink-dark);
+    padding: 0.45rem 1.1rem; font-size: 0.82rem; font-weight: 500; color: var(--pink-dark);
     letter-spacing: 0.04em; transition: background 0.2s;
     display: flex; align-items: center; gap: 0.4rem;
   }
   .cart-btn:hover { background: var(--pink-deep); color: #fff; }
-  .login-btn { background: transparent; border: 1.5px solid var(--gold); border-radius: 2rem; padding: 0.4rem 1.1rem; font-size: 0.82rem; font-weight: 500; color: var(--gold); letter-spacing: 0.04em; transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+  .login-btn { background: transparent; border: 1.5px solid var(--gold); border-radius: 2rem; padding: 0.38rem 1rem; font-size: 0.8rem; font-weight: 500; color: var(--gold); letter-spacing: 0.04em; transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
   .login-btn:hover { background: var(--gold-light); color: var(--text); }
   .cart-badge {
     background: var(--gold); color: #fff; border-radius: 50%;
     width: 18px; height: 18px; font-size: 0.7rem; font-weight: 600;
     display: flex; align-items: center; justify-content: center;
   }
+
+  /* HAMBURGER */
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* MOBILE DRAWER */
+  .mobile-drawer {
+    display: none; position: fixed; top: 0; left: 0; bottom: 0;
+    width: min(280px, 80vw);
+    background: var(--white); z-index: 1000;
+    box-shadow: 4px 0 24px rgba(60,30,30,0.12);
+    flex-direction: column; padding: 1.5rem 1.2rem;
+    transform: translateX(-105%);
+    transition: transform 0.3s ease;
+  }
+  .mobile-drawer.open { transform: translateX(0); display: flex; }
+  .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(60,30,30,0.28); z-index: 999; }
+  .drawer-backdrop.open { display: block; }
+  .drawer-close { align-self: flex-end; background: none; border: none; font-size: 1.4rem; color: var(--text-m); cursor: pointer; margin-bottom: 1rem; }
+  .drawer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--pink-dark); margin-bottom: 1.5rem; }
+  .drawer-logo span { color: var(--gold); }
+  .drawer-nav { display: flex; flex-direction: column; gap: 0.2rem; }
+  .drawer-nav a, .drawer-nav button {
+    display: block; padding: 0.7rem 0.5rem; font-size: 0.92rem; font-weight: 500;
+    color: var(--text); border: none; background: none; cursor: pointer;
+    border-radius: 8px; text-align: left; font-family: 'Jost', sans-serif;
+  }
+  .drawer-nav a:hover, .drawer-nav button:hover { background: var(--cream); color: var(--pink-dark); }
+  .drawer-bottom { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.6rem; }
+  .drawer-logout-btn { color: var(--text-m); font-size: 0.88rem; background: none; border: none; cursor: pointer; font-family: 'Jost', sans-serif; text-align: left; display: flex; align-items: center; gap: 0.5rem; }
 
   /* PAGES */
   .page { display: none; }
@@ -270,10 +303,92 @@
   .filter-btn:hover, .filter-btn.active { background: var(--pink); border-color: var(--pink-deep); color: var(--pink-dark); font-weight: 500; }
   .shop-grid-section { padding: 2.5rem 2rem; max-width: 1200px; margin: 0 auto; }
 
-  @media (max-width: 700px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 900px) {
+    nav { padding: 0 1.1rem; height: 58px; }
     .nav-links { display: none; }
+    .hamburger  { display: flex; }
+    .login-btn.nav-desktop-only { display: none; }
     .hero h1 { font-size: 2.4rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+    .price-filters { gap: 0.5rem; }
+    .price-chip { padding: 0.4rem 1rem; font-size: 0.78rem; }
+    .product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem; }
+    .product-img-wrap { height: 150px; }
+    .product-img-wrap .emoji { font-size: 3.5rem; }
+    .product-info { padding: 0.75rem 0.8rem 0.9rem; }
+    .product-name { font-size: 0.85rem; }
+    .add-cart-btn { padding: 0.42rem; font-size: 0.78rem; }
+    .relations-grid { grid-template-columns: repeat(2, 1fr); }
+    section { padding: 3rem 1rem; }
+    #make-your-box [style*="grid-template-columns:1fr"] { grid-template-columns: 1fr !important; }
+    #make-your-box [style*="position:sticky"]          { position: static !important; }
+    #make-your-box .product-grid                        { grid-template-columns: repeat(2,1fr) !important; }
+    #make-your-box .card                                { opacity: 1 !important; pointer-events: auto !important; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .shop-hero { padding: 2.5rem 1rem; }
+    .shop-filters { padding: 1rem 1rem; }
+    .filter-btn { padding: 0.35rem 0.85rem; font-size: 0.76rem; }
+    .shop-grid-section { padding: 1.5rem 1rem; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 0.85rem; height: 54px; }
+    .nav-logo { font-size: 1.25rem; }
+    .nav-right { gap: 0.3rem; }
+    .cart-btn { padding: 0.38rem 0.8rem; font-size: 0.76rem; }
+    .cart-badge { width: 16px; height: 16px; font-size: 0.65rem; }
+    section { padding: 2.5rem 0.9rem; }
+    .hero h1 { font-size: 2.1rem; }
+    .hero-sub { font-size: 0.88rem; line-height: 1.6; }
+    .hero-ctas { flex-direction: column; align-items: stretch; gap: 0.7rem; }
+    .hero-ctas button { width: 100%; }
+    .hero-trust { gap: 0.55rem; flex-direction: column; align-items: center; }
+    .price-filters { gap: 0.45rem; }
+    .price-chip { padding: 0.35rem 0.9rem; font-size: 0.75rem; }
+    .product-grid { grid-template-columns: repeat(2,1fr) !important; gap: 0.6rem; }
+    .product-img-wrap { height: 130px; }
+    .product-img-wrap .emoji { font-size: 3rem; }
+    .product-info { padding: 0.7rem 0.75rem 0.85rem; }
+    .product-name { font-size: 0.82rem; }
+    .add-cart-btn { padding: 0.38rem; font-size: 0.75rem; }
+    .relations-grid { grid-template-columns: repeat(2,1fr); gap: 0.8rem; }
+    .relation-card { padding: 1.4rem 0.6rem; }
+    .relation-icon { font-size: 1.7rem; }
+    .relation-card h4 { font-size: 0.8rem; }
+    .section-title { font-size: 1.65rem; }
+    .section-sub { font-size: 0.88rem; }
+    .reviews-card { padding: 1.2rem 1rem; }
+    .review-text { font-size: 0.82rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .footer-col h5 { font-size: 0.68rem; }
+    .footer-col a { font-size: 0.76rem; }
+    .footer-bottom { font-size: 0.73rem; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; padding: 0.65rem 1.4rem; font-size: 0.86rem; }
+    .cards-row { grid-template-columns: 1fr !important; }
+
+    /* Cart → bottom sheet on phone */
+    .cart-panel { right: auto !important; left: 0 !important; bottom: 0 !important; top: auto !important;
+                  width: 100% !important; height: 82vh !important;
+                  border-radius: 16px 16px 0 0 !important;
+                  transform: translateY(100%) !important; }
+    .cart-panel.open { transform: translateY(0) !important; }
+    .cart-header { padding: 1rem 1.2rem; }
+    .cart-items   { padding: 0.8rem 1rem; }
+    .cart-footer  { padding: 0.9rem 1.2rem; }
+
+    #make-your-box .product-grid { grid-template-columns: repeat(2,1fr) !important; }
+    #make-your-box #box-box-items .box-item-tag { font-size: 0.78rem; flex-wrap: wrap; }
+    .cart-item-icon { font-size: 1.7rem; min-width: 40px; }
+    .cart-item-name { font-size: 0.82rem; }
+    .cart-item-price { font-size: 0.78rem; }
+    /* box builder quick buttons */
+    #box-summary-sticky > div { position: static !important; top: auto !important; }
+  }
+
+  @media (max-width: 400px) {
+    .product-grid { grid-template-columns: 1fr !important; }
+    .hero h1  { font-size: 1.85rem; }
+    .section-title { font-size: 1.4rem; }
   }
 </style>
 </head>
@@ -282,20 +397,43 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Gift<span>rapture</span></div>
-  <div class="nav-links">
+
+  <!-- desktop links – hidden on mobile via media query -->
+  <div class="nav-links" id="nav-links-desktop">
     <a href="#" onclick="showPage('home')">Home</a>
     <a href="#" onclick="showPage('shop')">Shop</a>
     <a href="#bestsellers">Bestsellers</a>
     <a href="#make-your-box">Customise</a>
   </div>
+
   <div class="nav-right">
-    <a href="login.html" class="login-btn">🔑 Admin Login</a>
+    <button class="hamburger" id="hamburger-btn" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="login.html" class="login-btn nav-desktop-only">🔑 Admin</a>
     <button class="cart-btn" onclick="toggleCart()">
       🛍️ Cart
       <span class="cart-badge" id="cart-count">0</span>
     </button>
   </div>
 </nav>
+
+<!-- Drawer backdrop -->
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="toggleDrawer()"></div>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+  <div class="drawer-logo">Gift<span>rapture</span></div>
+  <div class="drawer-nav">
+    <a href="#" onclick="showPage('home');toggleDrawer()">🏠 Home</a>
+    <a href="#" onclick="showPage('shop');toggleDrawer()">🛍️ Shop</a>
+    <a href="#bestsellers"    onclick="toggleDrawer()">⭐ Bestsellers</a>
+    <a href="#make-your-box" onclick="toggleDrawer()">🎁 Customise Box</a>
+    <a href="login.html"     onclick="toggleDrawer()" style="margin-top:0.5rem;border-top:1px solid var(--border);padding-top:0.5rem;">🔑 Admin Login</a>
+  </div>
+  <div class="drawer-bottom" id="drawer-dynamic"></div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -799,9 +937,35 @@ function showPage(page) {
   document.getElementById('shop-page').classList.toggle('active', page === 'shop');
   window.scrollTo(0, 0);
   if (page === 'shop') renderProducts(products, 'shop-grid');
-}
+  }
 
-function showToast(msg) {
+  // ── DRAWER ─────────────────────────────────────────
+  function toggleDrawer() {
+    var isOpen  = document.getElementById('mobile-drawer').classList.contains('open');
+    var overlay = document.getElementById('drawer-backdrop');
+    var drawer  = document.getElementById('mobile-drawer');
+    var btn     = document.getElementById('hamburger-btn');
+
+    if (isOpen) {
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+      btn && btn.classList.remove('open');
+    } else {
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+      btn && btn.classList.add('open');
+    }
+  }
+
+  // close drawer on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { document.getElementById('mobile-drawer').classList.remove('open'); document.getElementById('drawer-backdrop').classList.remove('open'); document.getElementById('hamburger-btn') && document.getElementById('hamburger-btn').classList.remove('open'); }
+  });
+
+  // ── LIVE CART BADGE ────────────────────────────────
+  // badge count already updated in renderCart(); just keep it visible when drawer hidden
+
+  function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');

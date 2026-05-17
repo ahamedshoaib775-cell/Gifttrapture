@@ -501,31 +501,31 @@
     <div class="section-label">Thoughtfully Curated</div>
     <h2 class="section-title">Shop by Relation</h2>
     <p class="section-sub" style="margin: 0 auto 2.5rem;">Find the perfect hamper for every cherished person in your life.</p>
-    <div class="relations-grid">
-      <div class="relation-card" onclick="filterByRelation('Bride')">
+    <div class="relations-grid" id="relations-grid">
+      <div class="relation-card" data-rel="Bride">
         <div class="relation-icon">👰</div>
         <h4>For Bride</h4>
       </div>
-      <div class="relation-card" onclick="filterByRelation('Groom')">
+      <div class="relation-card" data-rel="Groom">
         <div class="relation-icon">🤵</div>
         <h4>For Groom</h4>
       </div>
-      <div class="relation-card" onclick="filterByRelation('Parents')">
+      <div class="relation-card" data-rel="Parents">
         <div class="relation-icon">💐</div>
         <h4>For Parents</h4>
       </div>
-      <div class="relation-card" onclick="filterByRelation('Siblings')">
+      <div class="relation-card" data-rel="Siblings">
         <div class="relation-icon">🎀</div>
         <h4>For Siblings</h4>
       </div>
-      <div class="relation-card" onclick="filterByRelation('Corporate')">
+      <div class="relation-card" data-rel="Corporate">
         <div class="relation-icon">💼</div>
         <h4>Corporate</h4>
       </div>
     </div>
   </section>
-
-   <!-- MAKE YOUR BOX -->
+ 
+    <!-- MAKE YOUR BOX -->
   <section id="make-your-box" class="make-box-section">
     <div style="max-width:1200px;margin:0 auto;">
       <div style="text-align:center;margin-bottom:2rem;">
@@ -700,7 +700,7 @@ function renderProducts(list, containerId) {
           <span class="sale-price">₹${p.salePrice}</span>
           <span class="reg-price">₹${p.price}</span>
         </div>
-        <button class="add-cart-btn" onclick="addToCart(${p.id})">Add to Bag 🛍️</button>
+        <button class="add-cart-btn" data-pid="${p.id}" onclick="addToCart(${p.id})">Add to Bag 🛍️</button>
       </div>
     </div>
   `).join('');
@@ -935,9 +935,51 @@ function showPage(page) {
   document.getElementById('shop-page').classList.toggle('active', page === 'shop');
   window.scrollTo(0, 0);
   if (page === 'shop') renderProducts(products, 'shop-grid');
-  }
+}
 
-  // ── DRAWER ─────────────────────────────────────────
+// ── EVENT DELEGATION (replaces inline onclick — one unhandled error can't crash the page) ──
+(function wireEvents() {
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // ── Relation cards (data-rel → filterByRelation) ──────────────
+    var grid = document.getElementById('relations-grid');
+    if (grid) {
+      grid.addEventListener('click', function(e) {
+        var card = e.target.closest('.relation-card');
+        if (!card) return;
+        var rel = card.getAttribute('data-rel');
+        if (typeof filterByRelation === 'function') filterByRelation(rel);
+      });
+    }
+
+    // ── Best-seller / product cards ──────────────────────────────
+    var bestGrid = document.getElementById('bestsellers-grid');
+    if (bestGrid) {
+      bestGrid.addEventListener('click', function(e) {
+        var btn = e.target.closest('.add-cart-btn');
+        if (!btn) return;
+        var id = btn.getAttribute('data-pid');
+        if (id && typeof addToCart === 'function') addToCart(+id);
+      });
+    }
+
+    // ── Product grid (shop page) ─────────────────────────────────
+    function bindShopGrid() {
+      var sg = document.getElementById('shop-grid');
+      if (!sg) return;
+      sg.addEventListener('click', function(e) {
+        var btn = e.target.closest('.add-cart-btn');
+        if (!btn) return;
+        var id = btn.getAttribute('data-pid');
+        if (id && typeof addToCart === 'function') addToCart(+id);
+      });
+    }
+    bindShopGrid();
+
+  });
+})(); // end wireEvents
+
+// ── DRAWER ─────────────────────────────────────────
   function toggleDrawer() {
     var isOpen  = document.getElementById('mobile-drawer').classList.contains('open');
     var overlay = document.getElementById('drawer-backdrop');

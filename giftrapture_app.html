@@ -657,18 +657,18 @@
 <script>
 // ─── DATA ───────────────────────────────────────────────
 const products = [
-  { id:1, name:"Blush Bridal Hamper", emoji:"💐", price:1800, salePrice:1399, category:"Wedding", relation:"Bride", priceRange:"1000-2000", tags:["Skincare","Candle","Jewellery"] },
-  { id:2, name:"Groom's Grooming Box", emoji:"🎩", price:1200, salePrice:999, category:"Wedding", relation:"Groom", priceRange:"500-1000", tags:["Cologne","Wallet","Card Holder"] },
-  { id:3, name:"Golden Blessings Hamper", emoji:"✨", price:2800, salePrice:2199, category:"Luxury", relation:"Parents", priceRange:"above2000", tags:["Dry Fruits","Silver Coins","Shawl"] },
-  { id:4, name:"Sweet Celebration Box", emoji:"🍫", price:699, salePrice:549, category:"Return Gift", relation:"Siblings", priceRange:"500-1000", tags:["Chocolates","Candle","Card"] },
-  { id:5, name:"Mehendi Morning Kit", emoji:"🌸", price:450, salePrice:349, category:"Return Gift", relation:"Bride", priceRange:"under500", tags:["Kumkum","Bangles","Incense"] },
-  { id:6, name:"Corporate Elegance Set", emoji:"💼", price:1500, salePrice:1199, category:"Corporate", relation:"Corporate", priceRange:"1000-2000", tags:["Diary","Pen","Tea Box"] },
-  { id:7, name:"Couple's First Home Box", emoji:"🏡", price:3200, salePrice:2599, category:"Luxury", relation:"Bride", priceRange:"above2000", tags:["Photo Frame","Plants","Candles"] },
-  { id:8, name:"Sibling Love Hamper", emoji:"🎀", price:800, salePrice:649, category:"Wedding", relation:"Siblings", priceRange:"500-1000", tags:["Chocolates","Photo Book","Charm"] },
-  { id:9, name:"Heritage Dry Fruits Box", emoji:"🌰", price:1100, salePrice:899, category:"Return Gift", relation:"Parents", priceRange:"500-1000", tags:["Almonds","Cashews","Dates"] },
-  { id:10, name:"Pastel Pamper Kit", emoji:"🌷", price:599, salePrice:449, category:"Wedding", relation:"Bride", priceRange:"under500", tags:["Face Mask","Lotion","Scrub"] },
-  { id:11, name:"Aromatic Luxury Candle Set", emoji:"🕯️", price:950, salePrice:749, category:"Return Gift", relation:"Siblings", priceRange:"500-1000", tags:["3 Candles","Match Sticks","Tray"] },
-  { id:12, name:"Premium Silver Puja Box", emoji:"🪔", price:2400, salePrice:1999, category:"Luxury", relation:"Parents", priceRange:"1000-2000", tags:["Silver Diya","Agarbatti","Puja Thali"] },
+  { id:1, name:"Blush Bridal Hamper",      emoji:"💐", image:"gift(bouquets)/IMG_3893.JPG.jpeg",  price:1800, salePrice:1399, category:"Wedding",        relation:"Bride",    priceRange:"1000-2000", tags:["Skincare","Candle","Jewellery"] },
+  { id:2, name:"Groom's Grooming Box",     emoji:"🎩", image:"gift(bouquets)/IMG_3894.JPG.jpeg",  price:1200, salePrice:999,  category:"Wedding",        relation:"Groom",    priceRange:"500-1000",  tags:["Cologne","Wallet","Card Holder"] },
+  { id:3, name:"Golden Blessings Hamper",  emoji:"✨", image:"gift(bouquets)/IMG_3895.JPG.jpeg",  price:2800, salePrice:2199, category:"Luxury",         relation:"Parents",  priceRange:"above2000", tags:["Dry Fruits","Silver Coins","Shawl"] },
+  { id:4, name:"Sweet Celebration Box",    emoji:"🍫", image:"gift(bouquets)/IMG_3897.JPG.jpeg",  price:699,  salePrice:549,  category:"Return Gift",    relation:"Siblings", priceRange:"500-1000",  tags:["Chocolates","Candle","Card"] },
+  { id:5, name:"Mehendi Morning Kit",      emoji:"🌸", image:"gift(bouquets)/IMG_3898.JPG.jpeg",  price:450,  salePrice:349,  category:"Return Gift",    relation:"Bride",    priceRange:"under500",  tags:["Kumkum","Bangles","Incense"] },
+  { id:6, name:"Corporate Elegance Set",   emoji:"💼", image:"gift(bouquets)/IMG_3893.JPG.jpeg",  price:1500, salePrice:1199, category:"Corporate",      relation:"Corporate",priceRange:"1000-2000", tags:["Diary","Pen","Tea Box"] },
+  { id:7, name:"Couple's First Home Box",  emoji:"🏡", image:"gift(bouquets)/IMG_3894.JPG.jpeg",  price:3200, salePrice:2599, category:"Luxury",         relation:"Bride",    priceRange:"above2000", tags:["Photo Frame","Plants","Candles"] },
+  { id:8, name:"Sibling Love Hamper",      emoji:"🎀", image:"gift(bouquets)/IMG_3895.JPG.jpeg",  price:800,  salePrice:649,  category:"Wedding",        relation:"Siblings", priceRange:"500-1000",  tags:["Chocolates","Photo Book","Charm"] },
+  { id:9, name:"Heritage Dry Fruits Box",  emoji:"🌰", image:"gift(bouquets)/IMG_3897.JPG.jpeg",  price:1100, salePrice:899,  category:"Return Gift",    relation:"Parents",  priceRange:"500-1000",  tags:["Almonds","Cashews","Dates"] },
+  { id:10, name:"Pastel Pamper Kit",       emoji:"🌷", image:"gift(bouquets)/IMG_3898.JPG.jpeg",  price:599,  salePrice:449,  category:"Wedding",        relation:"Bride",    priceRange:"under500",  tags:["Face Mask","Lotion","Scrub"] },
+  { id:11, name:"Aromatic Luxury Candle Set",emoji:"🕯️",image:"gift(bouquets)/IMG_3893.JPG.jpeg",price:950,salePrice:749,category:"Return Gift",    relation:"Siblings", priceRange:"500-1000",  tags:["3 Candles","Match Sticks","Tray"] },
+  { id:12, name:"Premium Silver Puja Box", emoji:"🪔", image:"gift(bouquets)/IMG_3894.JPG.jpeg", price:2400, salePrice:1999, category:"Luxury",         relation:"Parents",  priceRange:"1000-2000", tags:["Silver Diya","Agarbatti","Puja Thali"] },
 ];
 
 const reviews = [
@@ -696,7 +696,10 @@ function renderProducts(list, containerId) {
   el.innerHTML = list.map(p => `
     <div class="product-card">
       <div class="product-img-wrap">
-        <div class="emoji">${p.emoji}</div>
+        <img src="${p.image}" alt="${p.name}" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+             style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div class="emoji" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;">${p.emoji}</div>
         <div class="discount-badge">${Math.round((1 - p.salePrice/p.price)*100)}% OFF</div>
       </div>
       <div class="product-info">
